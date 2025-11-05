@@ -25,10 +25,11 @@ function MenuItemReviewForm({
     /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+)|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d)|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d)/i;
   // Stryker restore Regex
 
-  // Email regex for validation
-  // Stryker disable Regex
+  // Stryker disable next-line all
   const email_regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  // Stryker restore Regex
+
+  // Stryker disable next-line all
+  const itemId_regex = /^[1-9]\d*$/; // positive integers only
 
   return (
     <Form onSubmit={handleSubmit(submitAction)}>
@@ -58,20 +59,14 @@ function MenuItemReviewForm({
               type="text"
               isInvalid={Boolean(errors.itemId)}
               {...register("itemId", {
-                required: "Item ID is required.",
-                validate: {
-                  positive: (value) => {
-                    const num = parseInt(value, 10);
-                    if (isNaN(num) || num <= 0) {
-                      return "Item ID must be a positive integer.";
-                    }
-                    return true;
-                  }
-                }
+                required: true,
+                pattern: itemId_regex,
               })}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.itemId?.message}
+              {errors.itemId && "Item ID is required. "}
+              {errors.itemId?.type === "pattern" &&
+                "Item ID must be a positive integer."}
             </Form.Control.Feedback>
           </Form.Group>
         </Col>
@@ -85,15 +80,14 @@ function MenuItemReviewForm({
               type="email"
               isInvalid={Boolean(errors.reviewerEmail)}
               {...register("reviewerEmail", {
-                required: "Reviewer email is required.",
-                pattern: {
-                  value: email_regex,
-                  message: "Reviewer email must be a valid email address.",
-                },
+                required: true,
+                pattern: email_regex,
               })}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.reviewerEmail?.message}
+              {errors.reviewerEmail && "Reviewer email is required. "}
+              {errors.reviewerEmail?.type === "pattern" &&
+                "Reviewer email must be a valid email address."}
             </Form.Control.Feedback>
           </Form.Group>
         </Col>
@@ -109,11 +103,11 @@ function MenuItemReviewForm({
               type="text"
               isInvalid={Boolean(errors.stars)}
               {...register("stars", {
-                required: "Stars rating is required.",
+                required: true,
                 validate: {
-                  validRange: (value) => {
+                  inRange: (value) => {
                     const num = parseInt(value, 10);
-                    if (value === "0" || num === 0) {
+                    if (value === "0") {
                       return "Stars input must be between 1 and 5, inclusive.";
                     }
                     if (isNaN(num) || num < 1 || num > 5) {
@@ -125,6 +119,7 @@ function MenuItemReviewForm({
               })}
             />
             <Form.Control.Feedback type="invalid">
+              {errors.stars && errors.stars.type === "required" && "Stars rating is required. "}
               {errors.stars?.message}
             </Form.Control.Feedback>
           </Form.Group>
@@ -139,15 +134,12 @@ function MenuItemReviewForm({
               type="datetime-local"
               isInvalid={Boolean(errors.dateReviewed)}
               {...register("dateReviewed", {
-                required: "Date reviewed is required.",
-                pattern: {
-                  value: isodate_regex,
-                  message: "Date reviewed must be in ISO format.",
-                },
+                required: true,
+                pattern: isodate_regex,
               })}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.dateReviewed?.message}
+              {errors.dateReviewed && "Date reviewed is required. "}
             </Form.Control.Feedback>
           </Form.Group>
         </Col>
@@ -164,14 +156,12 @@ function MenuItemReviewForm({
               rows={3}
               isInvalid={Boolean(errors.comments)}
               {...register("comments", {
-                maxLength: {
-                  value: 500,
-                  message: "Comments must not exceed 500 characters.",
-                },
+                maxLength: 500,
               })}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.comments?.message}
+              {errors.comments?.type === "maxLength" &&
+                "Comments must not exceed 500 characters."}
             </Form.Control.Feedback>
           </Form.Group>
         </Col>
