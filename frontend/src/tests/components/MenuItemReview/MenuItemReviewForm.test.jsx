@@ -1,6 +1,5 @@
 import { render, waitFor, fireEvent, screen } from "@testing-library/react";
 import MenuItemReviewForm from "main/components/MenuItemReview/MenuItemReviewForm";
-import { ucsbDatesFixtures } from "fixtures/ucsbDatesFixtures";
 import { BrowserRouter as Router } from "react-router";
 import { expect } from "vitest";
 import { menuItemReviewFixtures } from "fixtures/MenuItemReviewFixtures";
