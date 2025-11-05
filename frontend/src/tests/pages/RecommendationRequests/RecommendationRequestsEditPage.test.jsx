@@ -144,6 +144,8 @@ describe("RecommendationRequestsEditPage tests", () => {
       fireEvent.change(explanationField, { target: { value: "Updated" } });
       fireEvent.change(dateRequestedField, { target: { value: "2024-11-02T10:00" } });
       fireEvent.change(dateNeededField, { target: { value: "2024-11-22T10:00" } });
+      // toggle done to true
+      fireEvent.click(doneField);
       fireEvent.click(submitButton);
 
       await waitFor(() => expect(mockToast).toBeCalled());
