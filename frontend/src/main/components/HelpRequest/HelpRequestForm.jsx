@@ -46,7 +46,7 @@ function HelpRequestForm({
 
         <Col>
           <Form.Group className="mb-3">
-            <Form.Label htmlFor="requestTime">Date (iso format)</Form.Label>
+            <Form.Label htmlFor="requestTime">Request Time</Form.Label>
             <Form.Control
               data-testid="HelpRequestForm-requestTime"
               id="requestTime"

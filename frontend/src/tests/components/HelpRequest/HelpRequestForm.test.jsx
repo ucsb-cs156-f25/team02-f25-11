@@ -22,7 +22,7 @@ describe("HelpRequestForm tests", () => {
     "Requester Email",
     "Team ID",
     "Table or Breakout Room",
-    "Date (iso format)",
+    "Request Time",
     "Explanation",
     "Solved",
   ];
