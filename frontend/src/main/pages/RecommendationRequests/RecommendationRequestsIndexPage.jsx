@@ -28,8 +28,10 @@ export default function RecommendationRequestsIndexPage() {
     error: _error,
     status: _status,
   } = useBackend(
+    // Stryker disable next-line all : don't test internal caching of React Query
     ["/api/recommendationrequests/all"],
     { method: "GET", url: "/api/recommendationrequests/all" },
+    // Stryker disable next-line all : don't test default value of empty list
     [],
   );
 

@@ -27,6 +27,7 @@ export default function RecommendationRequestsCreatePage({ storybook = false }) 
   const mutation = useBackendMutation(
     objectToAxiosParams,
     { onSuccess },
+    // Stryker disable next-line all : hard to set up test for caching
     ["/api/recommendationrequests/all"],
   );
 
