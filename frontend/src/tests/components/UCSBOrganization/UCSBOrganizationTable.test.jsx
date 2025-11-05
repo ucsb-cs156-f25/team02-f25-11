@@ -87,6 +87,9 @@ describe("UCSBOrganizationTable tests", () => {
         ucsbOrganizationFixtures.threeOrganizations[1].orgTranslationShort
     );
 
+    expect(screen.getByTestId(`${testId}-cell-row-0-col-inactive`)).toHaveTextContent("Yes");
+    expect(screen.getByTestId(`${testId}-cell-row-1-col-inactive`)).toHaveTextContent("No");
+
     const editButton = screen.getByTestId(
       `${testId}-cell-row-0-col-Edit-button`
     );
@@ -139,6 +142,9 @@ describe("UCSBOrganizationTable tests", () => {
     expect(screen.getByTestId(`${testId}-cell-row-1-col-orgTranslationShort`)).toHaveTextContent(
         ucsbOrganizationFixtures.threeOrganizations[1].orgTranslationShort
     );
+
+    expect(screen.getByTestId(`${testId}-cell-row-0-col-inactive`)).toHaveTextContent("Yes");
+    expect(screen.getByTestId(`${testId}-cell-row-1-col-inactive`)).toHaveTextContent("No");
 
 
     expect(screen.queryByText("Delete")).not.toBeInTheDocument();
@@ -212,12 +218,14 @@ describe("UCSBOrganizationTable tests", () => {
       `${testId}-cell-row-0-col-Delete-button`
     );
     expect(deleteButton).toBeInTheDocument();
-
+    const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     fireEvent.click(deleteButton);
 
     await waitFor(() => expect(axiosMock.history.delete.length).toBe(1));
+    expect(axiosMock.history.delete[0].url).toEqual("/api/ucsborganization"); // Could fix the Utils MutationIssue
     expect(axiosMock.history.delete[0].params).toEqual({
       orgCode: ucsbOrganizationFixtures.threeOrganizations[0].orgCode,
     });
+    expect(consoleSpy).toHaveBeenCalledWith({ message: "Organization deleted" }); //Fix the Utils MutationIssue
   });
 });
