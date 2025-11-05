@@ -1,0 +1,49 @@
+name: Deploy Frontend Coverage
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies (frontend)
+        working-directory: frontend
+        run: npm ci
+
+      - name: Generate coverage (frontend)
+        working-directory: frontend
+        run: npm run coverage
+
+      - name: Determine target folder
+        id: target
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "target=prs/${{ github.event.pull_request.number }}/coverage" >> $GITHUB_OUTPUT
+          else
+            echo "target=coverage" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Deploy coverage to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: frontend/coverage
+          target-folder: ${{ steps.target.outputs.target }}
+          clean: false
+
+
