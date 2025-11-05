@@ -226,6 +226,6 @@ describe("UCSBOrganizationTable tests", () => {
     expect(axiosMock.history.delete[0].params).toEqual({
       orgCode: ucsbOrganizationFixtures.threeOrganizations[0].orgCode,
     });
-    expect(consoleSpy).toHaveBeenCalledWith("Organization deleted"); //Fix the Utils MutationIssue
+    expect(consoleSpy).toHaveBeenCalledWith({ message: "Organization deleted" }); //Fix the Utils MutationIssue
   });
 });
