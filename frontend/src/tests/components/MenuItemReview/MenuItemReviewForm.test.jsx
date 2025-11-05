@@ -2,7 +2,7 @@ import { render, waitFor, fireEvent, screen } from "@testing-library/react";
 import MenuItemReviewForm from "main/components/MenuItemReview/MenuItemReviewForm";
 import { BrowserRouter as Router } from "react-router";
 import { expect } from "vitest";
-import { menuItemReviewFixtures } from "fixtures/menuItemReviewsFixtures";
+import { menuItemReviewFixtures } from "fixtures/MenuItemReviewFixtures.js";
 
 const mockedNavigate = vi.fn();
 vi.mock("react-router", async () => {
