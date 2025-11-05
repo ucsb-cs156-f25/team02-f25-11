@@ -277,7 +277,6 @@ describe("RecommendationRequestForm tests", () => {
     // And dateNeeded is marked invalid (due to required)
     expect(screen.getByTestId("RecommendationRequestForm-dateNeeded")).toHaveClass("is-invalid");
   });
-
   test("requester email rejects trailing characters (regex $ anchor)", async () => {
     const submitSpy = vi.fn();
     render(
@@ -318,6 +317,8 @@ describe("RecommendationRequestForm tests", () => {
     fireEvent.click(screen.getByTestId("RecommendationRequestForm-submit"));
     expect(submitSpy).not.toHaveBeenCalled();
     expect(await screen.findByText(/Enter a valid email address/)).toBeInTheDocument();
+    // Ensure the requester input is marked invalid
+    expect(screen.getByTestId("RecommendationRequestForm-requesterEmail")).toHaveClass("is-invalid");
     // Ensure the requester input is marked invalid
     expect(screen.getByTestId("RecommendationRequestForm-requesterEmail")).toHaveClass("is-invalid");
   });
