@@ -1,5 +1,7 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import RecommendationRequestCreatePage from "main/pages/RecommendationRequest/RecommendationRequestCreatePage";
+import RecommendationRequestCreatePage, {
+  RECOMMENDATION_REQUESTS_ALL_KEY,
+} from "main/pages/RecommendationRequest/RecommendationRequestCreatePage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router";
 
@@ -45,6 +47,12 @@ describe("RecommendationRequestCreatePage tests", () => {
   });
 
   const queryClient = new QueryClient();
+
+  test("mutation cache key is correct", () => {
+    expect(RECOMMENDATION_REQUESTS_ALL_KEY).toEqual([
+      "/api/recommendationrequests/all",
+    ]);
+  });
 
   test("renders form", async () => {
     render(
