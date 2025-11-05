@@ -118,14 +118,26 @@ describe("UCSBDiningCommonsMenuItemForm tests", () => {
     const stationField = screen.getByTestId("UCSBDiningCommonsMenuItem-station");
     const submitButton = screen.getByTestId("UCSBDiningCommonsMenuItem-submit");
 
+    // Fill in the form
     fireEvent.change(diningCommonsCodeField, { target: { value: "DLG" } });
     fireEvent.change(nameField, { target: { value: "Pizza" } });
     fireEvent.change(stationField, { target: { value: "Pizza Station" } });
 
+    // Verify initial values
+    expect(diningCommonsCodeField.value).toBe("DLG");
+    expect(nameField.value).toBe("Pizza");
+    expect(stationField.value).toBe("Pizza Station");
+
+    // Submit form
     fireEvent.click(submitButton);
+
     // Form should not throw any errors when submitted without submitAction
     await waitFor(() => {
       expect(screen.queryByText(/Error/)).not.toBeInTheDocument();
+      // Fields should retain their values since no submitAction was provided
+      expect(diningCommonsCodeField.value).toBe("DLG");
+      expect(nameField.value).toBe("Pizza");
+      expect(stationField.value).toBe("Pizza Station");
     });
   });
 
@@ -146,9 +158,22 @@ describe("UCSBDiningCommonsMenuItemForm tests", () => {
     const buttonsContainer = submitButton.closest('.d-flex');
     expect(buttonsContainer).toHaveClass('d-flex', 'gap-2');
 
-    // Verify both buttons are in the container
-    expect(buttonsContainer).toContainElement(submitButton);
-    expect(buttonsContainer).toContainElement(cancelButton);
+    // Verify both buttons are in the container and in the correct order
+    const buttons = buttonsContainer.querySelectorAll('button');
+    expect(buttons[0]).toBe(submitButton);
+    expect(buttons[1]).toBe(cancelButton);
+
+    // Verify button styling
+    expect(submitButton).toHaveClass('btn', 'btn-primary');
+    expect(cancelButton).toHaveClass('btn', 'btn-secondary');
+
+    // Verify button text content
+    expect(submitButton).toHaveTextContent('Create');
+    expect(cancelButton).toHaveTextContent('Cancel');
+
+    // Verify button attributes
+    expect(submitButton).toHaveAttribute('type', 'submit');
+    expect(cancelButton).toHaveAttribute('type', 'button');
   });
 
   test("No errors when good data is entered", async () => {
