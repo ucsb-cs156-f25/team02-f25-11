@@ -55,13 +55,18 @@ function MenuItemReviewForm({
             <Form.Control
               data-testid="MenuItemReviewForm-itemId"
               id="itemId"
-              type="text"
+              type="number"
+              step="1"
+              min="1"
               isInvalid={Boolean(errors.itemId)}
               {...register("itemId", {
                 required: "Item ID is required.",
-                pattern: {
-                  value: /^[1-9]\d*$/,
+                min: {
+                  value: 1,
                   message: "Item ID must be a positive integer."
+                },
+                validate: {
+                  integer: (value) => Number.isInteger(Number(value)) || "Item ID must be a positive integer."
                 }
               })}
             />
@@ -101,18 +106,25 @@ function MenuItemReviewForm({
             <Form.Control
               data-testid="MenuItemReviewForm-stars"
               id="stars"
-              type="text"
+              type="number"
+              step="1"
+              min="1"
+              max="5"
               isInvalid={Boolean(errors.stars)}
               {...register("stars", {
                 required: "Stars rating is required.",
+                min: {
+                  value: 1,
+                  message: "Stars value must be between 1 and 5, inclusive."
+                },
+                max: {
+                  value: 5,
+                  message: "Stars value must be between 1 and 5, inclusive."
+                },
                 validate: {
-                  validRange: (value) => {
-                    const num = parseInt(value, 10);
-                    if (value === "0") {
+                  specialZero: (value) => {
+                    if (value === "0" || value === 0) {
                       return "Stars input must be between 1 and 5, inclusive.";
-                    }
-                    if (isNaN(num) || num < 1 || num > 5) {
-                      return "Stars value must be between 1 and 5, inclusive.";
                     }
                     return true;
                   }
