@@ -83,7 +83,6 @@ describe("RecommendationRequestForm tests", () => {
     expect(screen.getByText(/Date requested is required\./)).toBeInTheDocument();
     expect(screen.getByText(/Date needed is required\./)).toBeInTheDocument();
   });
-
   test("dateNeeded must be after or equal to dateRequested", async () => {
     render(
       <QueryClientProvider client={queryClient}>
