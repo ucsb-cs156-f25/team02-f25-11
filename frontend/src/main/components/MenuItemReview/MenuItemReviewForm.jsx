@@ -25,9 +25,10 @@ function MenuItemReviewForm({
     /(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+)|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d)|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d)/i;
   // Stryker restore Regex
 
-  // Stryker disable next-line all
-  const yyyyq_regex = /((19)|(20))\d{2}[1-4]/i; // Accepts from 1900-2099 followed by 1-4.  Close enough.
-
+  // Email regex for validation
+    // Stryker disable Regex
+    const email_regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // Stryker restore Regex
   return (
     <Form onSubmit={handleSubmit(submitAction)}>
       <Row>
