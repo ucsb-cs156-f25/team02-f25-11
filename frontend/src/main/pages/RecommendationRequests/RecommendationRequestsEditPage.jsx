@@ -13,8 +13,10 @@ export default function RecommendationRequestsEditPage({ storybook = false }) {
     _error,
     _status,
   } = useBackend(
+    // Stryker disable next-line all : don't test internal caching of React Query
     [`/api/recommendationrequests?id=${id}`],
     {
+      // Stryker disable next-line all : GET is the default, so changing this to "" doesn't introduce a bug
       method: "GET",
       url: `/api/recommendationrequests`,
       params: {
@@ -48,6 +50,7 @@ export default function RecommendationRequestsEditPage({ storybook = false }) {
   const mutation = useBackendMutation(
     objectToAxiosPutParams,
     { onSuccess },
+    // Stryker disable next-line all : hard to set up test for caching
     [`/api/recommendationrequests?id=${id}`],
   );
 
