@@ -68,7 +68,7 @@ describe("HelpRequestIndexPage tests", () => {
       expect(screen.getByText(/Create Help Request/)).toBeInTheDocument();
     });
     const button = screen.getByText(/Create Help Request/);
-    expect(button).toHaveAttribute("href", "/helprequests/create");
+    expect(button).toHaveAttribute("href", "/helprequest/create");
     expect(button).toHaveAttribute("style", "float: right;");
   });
 
