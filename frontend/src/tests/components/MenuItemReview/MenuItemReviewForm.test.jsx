@@ -20,7 +20,7 @@ describe("MenuItemReviewForm tests", () => {
         <MenuItemReviewForm />
       </Router>,
     );
-    await screen.findByText(/Quarter YYYYQ/);
+    await screen.findByText(/Item ID/);
     await screen.findByText(/Create/);
     expect(screen.getByText(/Item ID/)).toBeInTheDocument();
     expect(screen.getByText(/Reviewer Email/)).toBeInTheDocument();
@@ -125,7 +125,7 @@ describe("MenuItemReviewForm tests", () => {
     ).not.toBeInTheDocument();
   });
 
-  test("test that star input 0 creates an error", async () => {
+  test("star input 0 creates an error", async () => {
     render(
       <Router>
         <MenuItemReviewForm />
@@ -144,7 +144,7 @@ describe("MenuItemReviewForm tests", () => {
     ).toBeInTheDocument();
   });
 
-  test("test that comments exceeding 500 characters creates an error", async () => {
+  test("comments exceeding 500 characters creates an error", async () => {
     render(
       <Router>
         <MenuItemReviewForm />
@@ -164,7 +164,7 @@ describe("MenuItemReviewForm tests", () => {
     ).toBeInTheDocument();
   });
 
-  test("test that form can be submitted without any comments", async () => {
+  test("form can be submitted without any comments", async () => {
     const mockSubmitAction = vi.fn();
 
     render(
@@ -200,7 +200,7 @@ describe("MenuItemReviewForm tests", () => {
     );
   });
 
-  test("that navigate(-1) is called when Cancel is clicked", async () => {
+  test("navigate(-1) is called when Cancel is clicked", async () => {
     render(
       <Router>
         <MenuItemReviewForm />
@@ -213,6 +213,4 @@ describe("MenuItemReviewForm tests", () => {
 
     await waitFor(() => expect(mockedNavigate).toHaveBeenCalledWith(-1));
   });
-
-
 });
