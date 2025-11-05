@@ -26,9 +26,10 @@ function MenuItemReviewForm({
   // Stryker restore Regex
 
   // Email regex for validation
-    // Stryker disable Regex
-    const email_regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    // Stryker restore Regex
+  // Stryker disable Regex
+  const email_regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // Stryker restore Regex
+
   return (
     <Form onSubmit={handleSubmit(submitAction)}>
       <Row>
@@ -58,7 +59,7 @@ function MenuItemReviewForm({
               isInvalid={Boolean(errors.itemId)}
               {...register("itemId", {
                 required: "Item ID is required.",
-                min: { value: 1, message: "Item ID must be a positive number." },
+                min: { value: 1, message: "Item ID must be a positive integer." },
               })}
             />
             <Form.Control.Feedback type="invalid">

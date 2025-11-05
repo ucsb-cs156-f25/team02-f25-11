@@ -62,7 +62,7 @@ describe("MenuItemReviewForm tests", () => {
       screen.getByText(/Reviewer email must be a valid email address/),
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/Stars value must be between 1 and 5, inclusive/),
+      screen.getByText(/Stars must be between 1 and 5/),
     ).toBeInTheDocument();
   });
 
@@ -115,7 +115,7 @@ describe("MenuItemReviewForm tests", () => {
     await waitFor(() => expect(mockSubmitAction).toHaveBeenCalled());
 
     expect(
-      screen.queryByText(/Item ID must be a positive number/),
+      screen.queryByText(/Item ID must be a positive integer/),
     ).not.toBeInTheDocument();
     expect(
       screen.queryByText(/Reviewer email must be a valid email address/),
@@ -138,9 +138,9 @@ describe("MenuItemReviewForm tests", () => {
     fireEvent.change(starsField, { target: { value: "0" } });
     fireEvent.click(submitButton);
 
-    await screen.findByText(/Stars input must be between 1 and 5, inclusive/);
+    await screen.findByText(/Stars must be between 1 and 5/);
     expect(
-      screen.getByText(/Stars input must be between 1 and 5, inclusive/),
+      screen.getByText(/Stars must be between 1 and 5/),
     ).toBeInTheDocument();
   });
 
