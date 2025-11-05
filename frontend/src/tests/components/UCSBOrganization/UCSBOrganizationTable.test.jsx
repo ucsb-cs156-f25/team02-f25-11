@@ -87,6 +87,9 @@ describe("UCSBOrganizationTable tests", () => {
         ucsbOrganizationFixtures.threeOrganizations[1].orgTranslationShort
     );
 
+    expect(screen.getByTestId(`${testId}-cell-row-0-col-inactive`)).toHaveTextContent("Yes");
+    expect(screen.getByTestId(`${testId}-cell-row-1-col-inactive`)).toHaveTextContent("No");
+
     const editButton = screen.getByTestId(
       `${testId}-cell-row-0-col-Edit-button`
     );
@@ -140,6 +143,9 @@ describe("UCSBOrganizationTable tests", () => {
         ucsbOrganizationFixtures.threeOrganizations[1].orgTranslationShort
     );
 
+    expect(screen.getByTestId(`${testId}-cell-row-0-col-inactive`)).toHaveTextContent("Yes");
+    expect(screen.getByTestId(`${testId}-cell-row-1-col-inactive`)).toHaveTextContent("No");
+
 
     expect(screen.queryByText("Delete")).not.toBeInTheDocument();
     expect(screen.queryByText("Edit")).not.toBeInTheDocument();
@@ -176,7 +182,7 @@ describe("UCSBOrganizationTable tests", () => {
 
     await waitFor(() =>
       expect(mockedNavigate).toHaveBeenCalledWith(
-        `/ucsborganizations/edit/${ucsbOrganizationFixtures.threeOrganizations[0].orgCode}`
+        `/ucsborganization/edit/${ucsbOrganizationFixtures.threeOrganizations[0].orgCode}`
       )
     );
   });
