@@ -9,8 +9,6 @@ export default function UCSBOrganizationEditPage({ storybook = false }) {
 
   const {
     data: organization,
-    error,
-    status,
   } = useBackend(
     // Stryker disable next-line all : don't test internal caching of React Query
     [`/api/ucsborganization?orgCode=${orgCode}`],
