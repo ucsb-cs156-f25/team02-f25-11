@@ -155,6 +155,8 @@ describe("RecommendationRequestForm tests", () => {
     fireEvent.click(screen.getByTestId("RecommendationRequestForm-submit"));
     // Should not submit because requesterEmail invalid
     expect(submitSpy).not.toHaveBeenCalled();
+    // Shows specific pattern error message
+    expect(await screen.findByText(/Enter a valid email address/)).toBeInTheDocument();
   });
 
   test("invalid professor email prevents submit", async () => {
@@ -175,6 +177,7 @@ describe("RecommendationRequestForm tests", () => {
 
     fireEvent.click(screen.getByTestId("RecommendationRequestForm-submit"));
     expect(submitSpy).not.toHaveBeenCalled();
+    expect(await screen.findByText(/Enter a valid email address/)).toBeInTheDocument();
   });
 
   test("email max length prevents submit", async () => {
@@ -196,6 +199,7 @@ describe("RecommendationRequestForm tests", () => {
 
     fireEvent.click(screen.getByTestId("RecommendationRequestForm-submit"));
     expect(submitSpy).not.toHaveBeenCalled();
+    expect(await screen.findByText(/Max length 254 characters/)).toBeInTheDocument();
   });
 
   test("explanation max length shows correct error message", async () => {
@@ -244,5 +248,123 @@ describe("RecommendationRequestForm tests", () => {
       ).not.toBeInTheDocument(),
     );
     expect(submitSpy).toHaveBeenCalled();
+  });
+
+  test("requester email rejects trailing characters (regex $ anchor)", async () => {
+    const submitSpy = vi.fn();
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <RecommendationRequestForm submitAction={submitSpy} />
+        </Router>
+      </QueryClientProvider>
+    );
+
+    fireEvent.change(screen.getByLabelText("Requester Email"), { target: { value: "s@u.eduX" } });
+    fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: "p@u.edu" } });
+    fireEvent.change(screen.getByLabelText("Explanation"), { target: { value: "x" } });
+    fireEvent.change(screen.getByLabelText("Date Requested"), { target: { value: "2024-11-02T10:00" } });
+    fireEvent.change(screen.getByLabelText("Date Needed"), { target: { value: "2024-11-22T10:00" } });
+
+    fireEvent.click(screen.getByTestId("RecommendationRequestForm-submit"));
+    expect(submitSpy).not.toHaveBeenCalled();
+    expect(await screen.findByText(/Enter a valid email address/)).toBeInTheDocument();
+  });
+
+  test("requester email rejects when email appears later in string (regex ^ anchor)", async () => {
+    const submitSpy = vi.fn();
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <RecommendationRequestForm submitAction={submitSpy} />
+        </Router>
+      </QueryClientProvider>
+    );
+
+    fireEvent.change(screen.getByLabelText("Requester Email"), { target: { value: "text s@u.edu" } });
+    fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: "p@u.edu" } });
+    fireEvent.change(screen.getByLabelText("Explanation"), { target: { value: "x" } });
+    fireEvent.change(screen.getByLabelText("Date Requested"), { target: { value: "2024-11-02T10:00" } });
+    fireEvent.change(screen.getByLabelText("Date Needed"), { target: { value: "2024-11-22T10:00" } });
+
+    fireEvent.click(screen.getByTestId("RecommendationRequestForm-submit"));
+    expect(submitSpy).not.toHaveBeenCalled();
+    expect(await screen.findByText(/Enter a valid email address/)).toBeInTheDocument();
+  });
+
+  test("professor email rejects trailing characters and later-in-string emails (regex anchors)", async () => {
+    const submitSpy = vi.fn();
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <RecommendationRequestForm submitAction={submitSpy} />
+        </Router>
+      </QueryClientProvider>
+    );
+
+    // trailing characters
+    fireEvent.change(screen.getByLabelText("Requester Email"), { target: { value: "s@u.edu" } });
+    fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: "p@u.eduX" } });
+    fireEvent.change(screen.getByLabelText("Explanation"), { target: { value: "x" } });
+    fireEvent.change(screen.getByLabelText("Date Requested"), { target: { value: "2024-11-02T10:00" } });
+    fireEvent.change(screen.getByLabelText("Date Needed"), { target: { value: "2024-11-22T10:00" } });
+
+    fireEvent.click(screen.getByTestId("RecommendationRequestForm-submit"));
+    expect(submitSpy).not.toHaveBeenCalled();
+    expect(await screen.findByText(/Enter a valid email address/)).toBeInTheDocument();
+
+    // later-in-string
+    fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: "text p@u.edu" } });
+    fireEvent.click(screen.getByTestId("RecommendationRequestForm-submit"));
+    expect(submitSpy).not.toHaveBeenCalled();
+    expect(await screen.findByText(/Enter a valid email address/)).toBeInTheDocument();
+  });
+
+  test("professor email max length shows correct error message", async () => {
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <RecommendationRequestForm />
+        </Router>
+      </QueryClientProvider>
+    );
+
+    const longEmail = `${"a".repeat(245)}@u.edu`;
+    fireEvent.change(screen.getByLabelText("Requester Email"), { target: { value: "s@u.edu" } });
+    fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: longEmail } });
+    fireEvent.change(screen.getByLabelText("Explanation"), { target: { value: "x" } });
+    fireEvent.change(screen.getByLabelText("Date Requested"), { target: { value: "2024-11-02T10:00" } });
+    fireEvent.change(screen.getByLabelText("Date Needed"), { target: { value: "2024-11-22T10:00" } });
+
+    fireEvent.click(screen.getByText(/Create/));
+    expect(await screen.findByText(/Max length 254 characters/)).toBeInTheDocument();
+  });
+
+  test("dateNeeded short-circuits when dateRequested empty: no compare error", async () => {
+    const submitSpy = vi.fn();
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <RecommendationRequestForm submitAction={submitSpy} />
+        </Router>
+      </QueryClientProvider>
+    );
+
+    // Fill everything except dateRequested
+    fireEvent.change(screen.getByLabelText("Requester Email"), { target: { value: "s@u.edu" } });
+    fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: "p@u.edu" } });
+    fireEvent.change(screen.getByLabelText("Explanation"), { target: { value: "x" } });
+    fireEvent.change(screen.getByLabelText("Date Needed"), { target: { value: "2024-11-22T10:00" } });
+
+    fireEvent.click(screen.getByTestId("RecommendationRequestForm-submit"));
+
+    // Ensure compare error does not appear and submission blocked due to missing dateRequested
+    await waitFor(() =>
+      expect(
+        screen.queryByText(/Date needed must be after or equal to date requested\./),
+      ).not.toBeInTheDocument(),
+    );
+    await screen.findByText(/Date requested is required\./);
+    expect(submitSpy).not.toHaveBeenCalled();
   });
 });
