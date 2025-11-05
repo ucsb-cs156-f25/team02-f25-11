@@ -22,7 +22,7 @@ function RecommendationRequestForm({
   const dateRequested = watch("dateRequested");
 
   return (
-    <Form onSubmit={handleSubmit(submitAction)}>
+    <Form noValidate onSubmit={handleSubmit(submitAction)}>
       {initialContents && (
         <Form.Group className="mb-3">
           <Form.Label htmlFor="id">Id</Form.Label>
