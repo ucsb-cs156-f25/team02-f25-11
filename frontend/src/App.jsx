@@ -15,9 +15,9 @@ import PlaceholderIndexPage from "main/pages/Placeholder/PlaceholderIndexPage";
 import PlaceholderCreatePage from "main/pages/Placeholder/PlaceholderCreatePage";
 import PlaceholderEditPage from "main/pages/Placeholder/PlaceholderEditPage";
 
-import RecommendationRequestIndexPage from "main/pages/RecommendationRequest/RecommendationRequestIndexPage";
-import RecommendationRequestCreatePage from "main/pages/RecommendationRequest/RecommendationRequestCreatePage";
-import RecommendationRequestEditPage from "main/pages/RecommendationRequest/RecommendationRequestEditPage";
+import RecommendationRequestIndexPage from "main/pages/RecommendationRequests/RecommendationRequestsIndexPage";
+import RecommendationRequestCreatePage from "main/pages/RecommendationRequests/RecommendationRequestsCreatePage";
+import RecommendationRequestEditPage from "main/pages/RecommendationRequests/RecommendationRequestsEditPage";
 
 import { hasRole, useCurrentUser } from "main/utils/useCurrentUser";
 
@@ -93,15 +93,22 @@ function App() {
       )}
       {hasRole(currentUser, "ROLE_USER") && (
         <>
+          {/* Support both singular and plural routes */}
           <Route
             exact
             path="/recommendationrequest"
+            element={<RecommendationRequestIndexPage />}
+          />
+          <Route
+            exact
+            path="/recommendationrequests"
             element={<RecommendationRequestIndexPage />}
           />
         </>
       )}
       {hasRole(currentUser, "ROLE_ADMIN") && (
         <>
+          {/* Edit/Create: support both singular and plural */}
           <Route
             exact
             path="/recommendationrequest/edit/:id"
@@ -109,7 +116,17 @@ function App() {
           />
           <Route
             exact
+            path="/recommendationrequests/edit/:id"
+            element={<RecommendationRequestEditPage />}
+          />
+          <Route
+            exact
             path="/recommendationrequest/create"
+            element={<RecommendationRequestCreatePage />}
+          />
+          <Route
+            exact
+            path="/recommendationrequests/create"
             element={<RecommendationRequestCreatePage />}
           />
         </>
