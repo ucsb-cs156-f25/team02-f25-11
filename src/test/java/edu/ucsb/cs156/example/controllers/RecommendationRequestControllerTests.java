@@ -41,29 +41,29 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
 
   @Test
   public void logged_out_users_cannot_get_all() throws Exception {
-    mockMvc.perform(get("/api/RecommendationRequest/all")).andExpect(status().is(403));
+    mockMvc.perform(get("/api/recommendationrequests/all")).andExpect(status().is(403));
   }
 
   @WithMockUser(roles = {"USER"})
   @Test
   public void logged_in_users_can_get_all() throws Exception {
-    mockMvc.perform(get("/api/RecommendationRequest/all")).andExpect(status().is(200));
+    mockMvc.perform(get("/api/recommendationrequests/all")).andExpect(status().is(200));
   }
 
   @Test
   public void logged_out_users_cannot_post() throws Exception {
-    mockMvc.perform(post("/api/RecommendationRequest/post")).andExpect(status().is(403));
+    mockMvc.perform(post("/api/recommendationrequests/post")).andExpect(status().is(403));
   }
 
   @WithMockUser(roles = {"USER"})
   @Test
   public void logged_in_regular_users_cannot_post() throws Exception {
-    mockMvc.perform(post("/api/RecommendationRequest/post")).andExpect(status().is(403));
+    mockMvc.perform(post("/api/recommendationrequests/post")).andExpect(status().is(403));
   }
 
   @Test
   public void logged_out_users_cannot_get_by_id() throws Exception {
-    mockMvc.perform(get("/api/RecommendationRequest?id=7")).andExpect(status().is(403));
+    mockMvc.perform(get("/api/recommendationrequests?id=7")).andExpect(status().is(403));
   }
 
   @WithMockUser(roles = {"USER"})
@@ -103,7 +103,7 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
 
     MvcResult response =
         mockMvc
-            .perform(get("/api/RecommendationRequest/all"))
+            .perform(get("/api/recommendationrequests/all"))
             .andExpect(status().isOk())
             .andReturn();
 
@@ -135,7 +135,7 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
     MvcResult response =
         mockMvc
             .perform(
-                post("/api/RecommendationRequest/post?requesterEmail=req1@ucsb.edu&professorEmail=prof1@ucsb.edu&explanation=explanation 1&dateRequested=2022-01-03T00:00:00&dateNeeded=2022-03-11T00:00:00&done=true")
+                post("/api/recommendationrequests/post?requesterEmail=req1@ucsb.edu&professorEmail=prof1@ucsb.edu&explanation=explanation 1&dateRequested=2022-01-03T00:00:00&dateNeeded=2022-03-11T00:00:00&done=true")
                     .with(csrf()))
             .andExpect(status().isOk())
             .andReturn();
@@ -167,7 +167,7 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
 
     MvcResult response =
         mockMvc
-            .perform(get("/api/RecommendationRequest?id=7"))
+            .perform(get("/api/recommendationrequests?id=7"))
             .andExpect(status().isOk())
             .andReturn();
 
@@ -183,18 +183,18 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
 
     when(recommendationRequestRepository.findById(eq(7L))).thenReturn(Optional.empty());
 
-    mockMvc.perform(get("/api/RecommendationRequest?id=7")).andExpect(status().isNotFound());
+    mockMvc.perform(get("/api/recommendationrequests?id=7")).andExpect(status().isNotFound());
   }
 
   @Test
   public void logged_out_users_cannot_put() throws Exception {
-    mockMvc.perform(put("/api/RecommendationRequest?id=9")).andExpect(status().is(403));
+    mockMvc.perform(put("/api/recommendationrequests?id=9")).andExpect(status().is(403));
   }
 
   @WithMockUser(roles = {"USER"})
   @Test
   public void logged_in_regular_users_cannot_put() throws Exception {
-    mockMvc.perform(put("/api/RecommendationRequest?id=9")).andExpect(status().is(403));
+    mockMvc.perform(put("/api/recommendationrequests?id=9")).andExpect(status().is(403));
   }
 
   @WithMockUser(roles = {"ADMIN", "USER"})
@@ -235,7 +235,7 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
     MvcResult response =
         mockMvc
             .perform(
-                put("/api/RecommendationRequest?id=67")
+                put("/api/recommendationrequests?id=67")
                     .contentType(MediaType.APPLICATION_JSON)
                     .characterEncoding("utf-8")
                     .content(requestBody)
@@ -272,7 +272,7 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
 
     mockMvc
         .perform(
-            put("/api/RecommendationRequest?id=67")
+            put("/api/recommendationrequests?id=67")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
                 .content(requestBody)
@@ -282,13 +282,13 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
 
   @Test
   public void logged_out_users_cannot_delete() throws Exception {
-    mockMvc.perform(delete("/api/RecommendationRequest?id=9")).andExpect(status().is(403));
+    mockMvc.perform(delete("/api/recommendationrequests?id=9")).andExpect(status().is(403));
   }
 
   @WithMockUser(roles = {"USER"})
   @Test
   public void logged_in_regular_users_cannot_delete() throws Exception {
-    mockMvc.perform(delete("/api/RecommendationRequest?id=9")).andExpect(status().is(403));
+    mockMvc.perform(delete("/api/recommendationrequests?id=9")).andExpect(status().is(403));
   }
 
   @WithMockUser(roles = {"ADMIN", "USER"})
@@ -313,7 +313,7 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
     // act
     MvcResult response =
         mockMvc
-            .perform(delete("/api/RecommendationRequest?id=15").with(csrf()))
+            .perform(delete("/api/recommendationrequests?id=15").with(csrf()))
             .andExpect(status().isOk())
             .andReturn();
 
@@ -335,7 +335,7 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
 
     // act
     mockMvc
-        .perform(delete("/api/RecommendationRequest?id=15").with(csrf()))
+        .perform(delete("/api/recommendationrequests?id=15").with(csrf()))
         .andExpect(status().isNotFound());
   }
 }
