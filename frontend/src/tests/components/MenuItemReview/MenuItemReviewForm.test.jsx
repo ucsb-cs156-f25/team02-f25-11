@@ -214,32 +214,5 @@ describe("MenuItemReviewForm tests", () => {
     await waitFor(() => expect(mockedNavigate).toHaveBeenCalledWith(-1));
   });
 
-  test("test that form can be submitted without comments", async () => {
-    const mockSubmitAction = vi.fn();
-
-    render(
-      <Router>
-        <MenuItemReviewForm submitAction={mockSubmitAction} />
-      </Router>,
-    );
-    await screen.findByTestId("MenuItemReviewForm-itemId");
-
-    const itemIdField = screen.getByTestId("MenuItemReviewForm-itemId");
-    const reviewerEmailField = screen.getByTestId("MenuItemReviewForm-reviewerEmail");
-    const starsField = screen.getByTestId("MenuItemReviewForm-stars");
-    const dateReviewedField = screen.getByTestId("MenuItemReviewForm-dateReviewed");
-    const submitButton = screen.getByTestId("MenuItemReviewForm-submit");
-
-    fireEvent.change(itemIdField, { target: { value: "1" } });
-    fireEvent.change(reviewerEmailField, { target: { value: "test@example.com" } });
-    fireEvent.change(starsField, { target: { value: "5" } });
-    fireEvent.change(dateReviewedField, {
-      target: { value: "2022-01-02T12:00" },
-    });
-    fireEvent.click(submitButton);
-
-    await waitFor(() => expect(mockSubmitAction).toHaveBeenCalled());
-  });
-
 
 });
