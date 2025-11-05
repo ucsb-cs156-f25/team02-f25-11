@@ -4,6 +4,10 @@ import { Navigate } from "react-router";
 import { useBackendMutation } from "main/utils/useBackend";
 import { toast } from "react-toastify";
 
+export const RECOMMENDATION_REQUESTS_ALL_KEY = [
+  "/api/recommendationrequests/all",
+];
+
 export default function RecommendationRequestCreatePage({ storybook = false }) {
   const objectToAxiosParams = (req) => ({
     url: "/api/recommendationrequests/post",
@@ -24,9 +28,11 @@ export default function RecommendationRequestCreatePage({ storybook = false }) {
     );
   };
 
-  const mutation = useBackendMutation(objectToAxiosParams, { onSuccess }, [
-    "/api/recommendationrequests/all",
-  ]);
+  const mutation = useBackendMutation(
+    objectToAxiosParams,
+    { onSuccess },
+    RECOMMENDATION_REQUESTS_ALL_KEY,
+  );
 
   const { isSuccess } = mutation;
 
