@@ -190,7 +190,7 @@ describe("RecommendationRequestForm tests", () => {
       </QueryClientProvider>
     );
 
-    const longEmail = `${"a".repeat(245)}@u.edu`; // >254 total length
+    const longEmail = `${"a".repeat(249)}@u.edu`; // 255 total length (>254)
     fireEvent.change(screen.getByLabelText("Requester Email"), { target: { value: longEmail } });
     fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: "p@u.edu" } });
     fireEvent.change(screen.getByLabelText("Explanation"), { target: { value: "x" } });
@@ -260,7 +260,7 @@ describe("RecommendationRequestForm tests", () => {
       </QueryClientProvider>
     );
 
-    fireEvent.change(screen.getByLabelText("Requester Email"), { target: { value: "s@u.eduX" } });
+    fireEvent.change(screen.getByLabelText("Requester Email"), { target: { value: "s@u.edu X" } });
     fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: "p@u.edu" } });
     fireEvent.change(screen.getByLabelText("Explanation"), { target: { value: "x" } });
     fireEvent.change(screen.getByLabelText("Date Requested"), { target: { value: "2024-11-02T10:00" } });
@@ -304,7 +304,7 @@ describe("RecommendationRequestForm tests", () => {
 
     // trailing characters
     fireEvent.change(screen.getByLabelText("Requester Email"), { target: { value: "s@u.edu" } });
-    fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: "p@u.eduX" } });
+    fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: "p@u.edu X" } });
     fireEvent.change(screen.getByLabelText("Explanation"), { target: { value: "x" } });
     fireEvent.change(screen.getByLabelText("Date Requested"), { target: { value: "2024-11-02T10:00" } });
     fireEvent.change(screen.getByLabelText("Date Needed"), { target: { value: "2024-11-22T10:00" } });
@@ -329,7 +329,7 @@ describe("RecommendationRequestForm tests", () => {
       </QueryClientProvider>
     );
 
-    const longEmail = `${"a".repeat(245)}@u.edu`;
+    const longEmail = `${"a".repeat(249)}@u.edu`;
     fireEvent.change(screen.getByLabelText("Requester Email"), { target: { value: "s@u.edu" } });
     fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: longEmail } });
     fireEvent.change(screen.getByLabelText("Explanation"), { target: { value: "x" } });
