@@ -127,7 +127,10 @@ function RecommendationRequestForm({
               // simple compare as strings if both are in 'YYYY-MM-DDTHH:mm' form
               // Stryker disable next-line ConditionalExpression, LogicalOperator, BooleanLiteral: guard clause must short-circuit when either is empty
               if (!dateRequested || !value) return true;
-              return value >= dateRequested || "Date needed must be after or equal to date requested.";
+              return (
+                value >= dateRequested ||
+                "Date needed must be after or equal to date requested."
+              );
             },
           })}
         />

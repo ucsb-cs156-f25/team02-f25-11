@@ -79,5 +79,3 @@ export default function RecommendationRequestsEditPage({ storybook = false }) {
     </BasicLayout>
   );
 }
-
-

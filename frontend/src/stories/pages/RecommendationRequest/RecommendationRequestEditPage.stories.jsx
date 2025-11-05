@@ -4,14 +4,14 @@ import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
 import { recommendationRequestFixtures } from "fixtures/recommendationRequestFixtures";
 import { http, HttpResponse } from "msw";
 
-import RecommendationRequestsEditPage from "main/pages/RecommendationRequests/RecommendationRequestsEditPage";
+import RecommendationRequestEditPage from "main/pages/RecommendationRequest/RecommendationRequestEditPage";
 
 export default {
-  title: "pages/RecommendationRequests/RecommendationRequestsEditPage",
-  component: RecommendationRequestsEditPage,
+  title: "pages/RecommendationRequest/RecommendationRequestEditPage",
+  component: RecommendationRequestEditPage,
 };
 
-const Template = () => <RecommendationRequestsEditPage storybook={true} />;
+const Template = () => <RecommendationRequestEditPage storybook={true} />;
 
 export const Default = Template.bind({});
 Default.parameters = {

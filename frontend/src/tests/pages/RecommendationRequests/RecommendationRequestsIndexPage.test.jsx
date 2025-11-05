@@ -27,15 +27,23 @@ describe("RecommendationRequestsIndexPage tests", () => {
   const setupUserOnly = () => {
     axiosMock.reset();
     axiosMock.resetHistory();
-    axiosMock.onGet("/api/currentUser").reply(200, apiCurrentUserFixtures.userOnly);
-    axiosMock.onGet("/api/systemInfo").reply(200, systemInfoFixtures.showingNeither);
+    axiosMock
+      .onGet("/api/currentUser")
+      .reply(200, apiCurrentUserFixtures.userOnly);
+    axiosMock
+      .onGet("/api/systemInfo")
+      .reply(200, systemInfoFixtures.showingNeither);
   };
 
   const setupAdminUser = () => {
     axiosMock.reset();
     axiosMock.resetHistory();
-    axiosMock.onGet("/api/currentUser").reply(200, apiCurrentUserFixtures.adminUser);
-    axiosMock.onGet("/api/systemInfo").reply(200, systemInfoFixtures.showingNeither);
+    axiosMock
+      .onGet("/api/currentUser")
+      .reply(200, apiCurrentUserFixtures.adminUser);
+    axiosMock
+      .onGet("/api/systemInfo")
+      .reply(200, systemInfoFixtures.showingNeither);
   };
 
   const queryClient = new QueryClient();
@@ -53,7 +61,9 @@ describe("RecommendationRequestsIndexPage tests", () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText(/Create Recommendation Request/)).toBeInTheDocument();
+      expect(
+        screen.getByText(/Create Recommendation Request/),
+      ).toBeInTheDocument();
     });
     const button = screen.getByText(/Create Recommendation Request/);
     expect(button).toHaveAttribute("href", "/recommendationrequests/create");
@@ -75,22 +85,34 @@ describe("RecommendationRequestsIndexPage tests", () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("2");
+      expect(
+        screen.getByTestId(`${testId}-cell-row-0-col-id`),
+      ).toHaveTextContent("2");
     });
-    expect(screen.getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("3");
-    expect(screen.getByTestId(`${testId}-cell-row-2-col-id`)).toHaveTextContent("4");
+    expect(screen.getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent(
+      "3",
+    );
+    expect(screen.getByTestId(`${testId}-cell-row-2-col-id`)).toHaveTextContent(
+      "4",
+    );
 
     const createButton = screen.queryByText("Create Recommendation Request");
     expect(createButton).not.toBeInTheDocument();
 
-    const emailCell = screen.getByTestId(`${testId}-cell-row-0-col-requesterEmail`);
+    const emailCell = screen.getByTestId(
+      `${testId}-cell-row-0-col-requesterEmail`,
+    );
     expect(emailCell).toHaveTextContent("another.student@ucsb.edu");
 
     expect(
-      screen.queryByTestId("RecommendationRequestTable-cell-row-0-col-Delete-button"),
+      screen.queryByTestId(
+        "RecommendationRequestTable-cell-row-0-col-Delete-button",
+      ),
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByTestId("RecommendationRequestTable-cell-row-0-col-Edit-button"),
+      screen.queryByTestId(
+        "RecommendationRequestTable-cell-row-0-col-Edit-button",
+      ),
     ).not.toBeInTheDocument();
   });
 
@@ -139,10 +161,14 @@ describe("RecommendationRequestsIndexPage tests", () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByTestId(`${testId}-cell-row-0-col-id`)).toBeInTheDocument();
+      expect(
+        screen.getByTestId(`${testId}-cell-row-0-col-id`),
+      ).toBeInTheDocument();
     });
 
-    expect(screen.getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("2");
+    expect(screen.getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent(
+      "2",
+    );
 
     const deleteButton = await screen.findByTestId(
       `${testId}-cell-row-0-col-Delete-button`,
@@ -162,5 +188,3 @@ describe("RecommendationRequestsIndexPage tests", () => {
     expect(axiosMock.history.delete[0].params).toEqual({ id: 2 });
   });
 });
-
-
