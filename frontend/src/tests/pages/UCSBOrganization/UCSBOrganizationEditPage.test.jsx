@@ -139,7 +139,7 @@ describe("UCSBOrganizationEditPage tests", () => {
 
       fireEvent.change(orgTranslationShortField, { target: { value: "Skydiving Extreme" } });
       fireEvent.change(orgTranslationField, { target: { value: "UCSB Skydiving Club Updated" } });
-      fireEvent.click(inactiveField); // ✅ proper checkbox toggle
+      fireEvent.click(inactiveField);
       fireEvent.click(submitButton);
 
       await waitFor(() => expect(mockToast).toBeCalled());
@@ -186,7 +186,7 @@ describe("UCSBOrganizationEditPage tests", () => {
 
       fireEvent.change(orgTranslationShortField, { target: { value: "Skydiving Extreme" } });
       fireEvent.change(orgTranslationField, { target: { value: "UCSB Skydiving Club Updated" } });
-      fireEvent.click(inactiveField); // ✅ same proper toggle
+      fireEvent.click(inactiveField);
       fireEvent.click(submitButton);
 
       await waitFor(() => expect(mockToast).toBeCalled());
