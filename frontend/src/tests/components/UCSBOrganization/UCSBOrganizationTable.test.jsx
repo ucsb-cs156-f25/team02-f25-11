@@ -176,7 +176,7 @@ describe("UCSBOrganizationTable tests", () => {
 
     await waitFor(() =>
       expect(mockedNavigate).toHaveBeenCalledWith(
-        `/ucsborganizations/edit/${ucsbOrganizationFixtures.threeOrganizations[0].orgCode}`
+        `/ucsborganization/edit/${ucsbOrganizationFixtures.threeOrganizations[0].orgCode}`
       )
     );
   });
@@ -186,7 +186,7 @@ describe("UCSBOrganizationTable tests", () => {
 
     const axiosMock = new AxiosMockAdapter(axios);
     axiosMock
-      .onDelete("/api/ucsborganizations")
+      .onDelete("/api/ucsborganization")
       .reply(200, { message: "Organization deleted" });
 
     render(

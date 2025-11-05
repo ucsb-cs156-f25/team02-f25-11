@@ -33,7 +33,7 @@ ThreeItemsAdminUser.args = {
 
 ThreeItemsAdminUser.parameters = {
   msw: [
-    http.delete("/api/ucsborganizations", () => {
+    http.delete("/api/ucsborganization", () => {
       return HttpResponse.json(
         { message: "Organization deleted successfully" },
         { status: 200 },
