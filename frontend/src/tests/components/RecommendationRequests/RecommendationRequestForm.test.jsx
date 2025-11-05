@@ -133,6 +133,8 @@ describe("RecommendationRequestForm tests", () => {
         ),
       ).not.toBeInTheDocument(),
     );
+    // And dateNeeded should NOT be marked invalid
+    expect(screen.getByTestId("RecommendationRequestForm-dateNeeded")).not.toHaveClass("is-invalid");
     await screen.findByText(/Date requested is required\./);
   });
 
@@ -190,7 +192,7 @@ describe("RecommendationRequestForm tests", () => {
       </QueryClientProvider>
     );
 
-    const longEmail = `${"a".repeat(245)}@u.edu`; // >254 total length
+    const longEmail = `${"a".repeat(249)}@u.edu`; // 255 total length (>254)
     fireEvent.change(screen.getByLabelText("Requester Email"), { target: { value: longEmail } });
     fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: "p@u.edu" } });
     fireEvent.change(screen.getByLabelText("Explanation"), { target: { value: "x" } });
@@ -250,6 +252,32 @@ describe("RecommendationRequestForm tests", () => {
     expect(submitSpy).toHaveBeenCalled();
   });
 
+  test("dateNeeded empty short-circuits compare and shows required only", async () => {
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <RecommendationRequestForm />
+        </Router>
+      </QueryClientProvider>
+    );
+
+    // Fill everything except dateNeeded
+    fireEvent.change(screen.getByLabelText("Requester Email"), { target: { value: "s@u.edu" } });
+    fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: "p@u.edu" } });
+    fireEvent.change(screen.getByLabelText("Explanation"), { target: { value: "x" } });
+    fireEvent.change(screen.getByLabelText("Date Requested"), { target: { value: "2024-11-02T10:00" } });
+
+    fireEvent.click(screen.getByTestId("RecommendationRequestForm-submit"));
+
+    // Only required error should appear for dateNeeded; compare error should not
+    await screen.findByText(/Date needed is required\./);
+    expect(
+      screen.queryByText(/Date needed must be after or equal to date requested\./),
+    ).not.toBeInTheDocument();
+    // And dateNeeded is marked invalid (due to required)
+    expect(screen.getByTestId("RecommendationRequestForm-dateNeeded")).toHaveClass("is-invalid");
+  });
+
   test("requester email rejects trailing characters (regex $ anchor)", async () => {
     const submitSpy = vi.fn();
     render(
@@ -260,7 +288,7 @@ describe("RecommendationRequestForm tests", () => {
       </QueryClientProvider>
     );
 
-    fireEvent.change(screen.getByLabelText("Requester Email"), { target: { value: "s@u.eduX" } });
+    fireEvent.change(screen.getByLabelText("Requester Email"), { target: { value: "s@u.edu X" } });
     fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: "p@u.edu" } });
     fireEvent.change(screen.getByLabelText("Explanation"), { target: { value: "x" } });
     fireEvent.change(screen.getByLabelText("Date Requested"), { target: { value: "2024-11-02T10:00" } });
@@ -290,6 +318,8 @@ describe("RecommendationRequestForm tests", () => {
     fireEvent.click(screen.getByTestId("RecommendationRequestForm-submit"));
     expect(submitSpy).not.toHaveBeenCalled();
     expect(await screen.findByText(/Enter a valid email address/)).toBeInTheDocument();
+    // Ensure the requester input is marked invalid
+    expect(screen.getByTestId("RecommendationRequestForm-requesterEmail")).toHaveClass("is-invalid");
   });
 
   test("professor email rejects trailing characters and later-in-string emails (regex anchors)", async () => {
@@ -304,7 +334,7 @@ describe("RecommendationRequestForm tests", () => {
 
     // trailing characters
     fireEvent.change(screen.getByLabelText("Requester Email"), { target: { value: "s@u.edu" } });
-    fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: "p@u.eduX" } });
+    fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: "p@u.edu X" } });
     fireEvent.change(screen.getByLabelText("Explanation"), { target: { value: "x" } });
     fireEvent.change(screen.getByLabelText("Date Requested"), { target: { value: "2024-11-02T10:00" } });
     fireEvent.change(screen.getByLabelText("Date Needed"), { target: { value: "2024-11-22T10:00" } });
@@ -312,12 +342,14 @@ describe("RecommendationRequestForm tests", () => {
     fireEvent.click(screen.getByTestId("RecommendationRequestForm-submit"));
     expect(submitSpy).not.toHaveBeenCalled();
     expect(await screen.findByText(/Enter a valid email address/)).toBeInTheDocument();
+    expect(screen.getByTestId("RecommendationRequestForm-professorEmail")).toHaveClass("is-invalid");
 
     // later-in-string
     fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: "text p@u.edu" } });
     fireEvent.click(screen.getByTestId("RecommendationRequestForm-submit"));
     expect(submitSpy).not.toHaveBeenCalled();
     expect(await screen.findByText(/Enter a valid email address/)).toBeInTheDocument();
+    expect(screen.getByTestId("RecommendationRequestForm-professorEmail")).toHaveClass("is-invalid");
   });
 
   test("professor email max length shows correct error message", async () => {
@@ -329,7 +361,7 @@ describe("RecommendationRequestForm tests", () => {
       </QueryClientProvider>
     );
 
-    const longEmail = `${"a".repeat(245)}@u.edu`;
+    const longEmail = `${"a".repeat(249)}@u.edu`;
     fireEvent.change(screen.getByLabelText("Requester Email"), { target: { value: "s@u.edu" } });
     fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: longEmail } });
     fireEvent.change(screen.getByLabelText("Explanation"), { target: { value: "x" } });
@@ -364,6 +396,8 @@ describe("RecommendationRequestForm tests", () => {
         screen.queryByText(/Date needed must be after or equal to date requested\./),
       ).not.toBeInTheDocument(),
     );
+    // And dateNeeded should NOT be marked invalid
+    expect(screen.getByTestId("RecommendationRequestForm-dateNeeded")).not.toHaveClass("is-invalid");
     await screen.findByText(/Date requested is required\./);
     expect(submitSpy).not.toHaveBeenCalled();
   });
