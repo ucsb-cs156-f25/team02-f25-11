@@ -124,7 +124,7 @@ describe("RecommendationRequestForm tests", () => {
     const submit = await screen.findByText(/Create/);
     fireEvent.click(submit);
 
-  // We should NOT see the compare error for dateNeeded; instead, dateRequested is required
+    // We should NOT see the compare error for dateNeeded; instead, dateRequested is required
     await waitFor(() =>
       expect(
         screen.queryByText(
@@ -191,6 +191,7 @@ describe("RecommendationRequestForm tests", () => {
       </QueryClientProvider>
     );
 
+    const longEmail = `${"a".repeat(249)}@u.edu`; // 255 total length (>254)
     const longEmail = `${"a".repeat(249)}@u.edu`; // 255 total length (>254)
     fireEvent.change(screen.getByLabelText("Requester Email"), { target: { value: longEmail } });
     fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: "p@u.edu" } });
