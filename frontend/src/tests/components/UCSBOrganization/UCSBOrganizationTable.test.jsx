@@ -218,7 +218,7 @@ describe("UCSBOrganizationTable tests", () => {
       `${testId}-cell-row-0-col-Delete-button`
     );
     expect(deleteButton).toBeInTheDocument();
-
+    const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     fireEvent.click(deleteButton);
 
     await waitFor(() => expect(axiosMock.history.delete.length).toBe(1));
@@ -226,5 +226,6 @@ describe("UCSBOrganizationTable tests", () => {
     expect(axiosMock.history.delete[0].params).toEqual({
       orgCode: ucsbOrganizationFixtures.threeOrganizations[0].orgCode,
     });
+    expect(consoleSpy).toHaveBeenCalledWith("Organization deleted"); //Fix the Utils MutationIssue
   });
 });
