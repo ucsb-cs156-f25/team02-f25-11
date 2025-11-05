@@ -2,7 +2,7 @@ import React from "react";
 import { useBackend } from "main/utils/useBackend";
 
 import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
-import RestaurantTable from "main/components/HelpRequest/HelpRequestTable";
+import HelpRequestTable from "main/components/HelpRequest/HelpRequestTable";
 import { useCurrentUser, hasRole } from "main/utils/useCurrentUser";
 import { Button } from "react-bootstrap";
 
@@ -40,7 +40,7 @@ export default function HelpRequestIndexPage() {
       <div className="pt-2">
         {createButton()}
         <h1>Restaurants</h1>
-        <RestaurantTable requests={helpRequests} currentUser={currentUser} />
+        <HelpRequestTable requests={helpRequests} currentUser={currentUser} />
       </div>
     </BasicLayout>
   );
