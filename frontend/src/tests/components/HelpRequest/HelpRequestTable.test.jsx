@@ -6,6 +6,9 @@ import { MemoryRouter } from "react-router";
 import { currentUserFixtures } from "fixtures/currentUserFixtures";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
+import { toast } from "react-toastify";
+
+vi.mock("react-toastify");
 
 const mockedNavigate = vi.fn();
 vi.mock("react-router", async () => {
@@ -20,6 +23,7 @@ describe("HelpRequestTable tests", () => {
   const queryClient = new QueryClient();
 
   const expectedHeaders = [	
+    "id",
     "Requester Email",
     "Team Id",
     "Table or Breakout Room",
@@ -29,6 +33,7 @@ describe("HelpRequestTable tests", () => {
   ];
 
   const expectedFields = [
+    "id",
     "requesterEmail",
     "teamId",
     "tableOrBreakoutRoom",
@@ -222,7 +227,7 @@ describe("HelpRequestTable tests", () => {
     const axiosMock = new AxiosMockAdapter(axios);
     axiosMock
       .onDelete("/api/helprequests")
-      .reply(200, { message: "Request deleted" });
+      .reply(200, { message: "Request Deleted" });
 
     // act - render the component
     render(
@@ -263,6 +268,7 @@ describe("HelpRequestTable tests", () => {
     // assert - check that the delete endpoint was called
 
     await waitFor(() => expect(axiosMock.history.delete.length).toBe(1));
+    expect(axiosMock.history.delete[0].url).toBe("/api/helprequests");
     expect(axiosMock.history.delete[0].params).toEqual({ id: 2 });
-  });
+    expect(toast).toHaveBeenCalledWith({ message: "Request Deleted" });  });
 });
