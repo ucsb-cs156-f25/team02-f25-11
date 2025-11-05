@@ -222,6 +222,7 @@ describe("UCSBOrganizationTable tests", () => {
     fireEvent.click(deleteButton);
 
     await waitFor(() => expect(axiosMock.history.delete.length).toBe(1));
+    expect(axiosMock.history.delete[0].url).toEqual("/api/ucsborganization"); // Could fix the Utils MutationIssue
     expect(axiosMock.history.delete[0].params).toEqual({
       orgCode: ucsbOrganizationFixtures.threeOrganizations[0].orgCode,
     });
