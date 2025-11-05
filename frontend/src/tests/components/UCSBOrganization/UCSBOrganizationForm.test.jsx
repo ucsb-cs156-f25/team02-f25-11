@@ -34,9 +34,13 @@ describe("UCSBOrganizationForm tests", () => {
       expect(header).toBeInTheDocument();
     });
 
-    // orgCode should be enabled in create mode
     const orgCodeInput = screen.getByTestId(`${testId}-orgCode`);
     expect(orgCodeInput).toBeEnabled();
+
+    expect(screen.getByTestId(`${testId}-orgTranslationShort`)).toBeInTheDocument();
+    expect(screen.getByTestId(`${testId}-orgTranslation`)).toBeInTheDocument();
+    expect(screen.getByTestId(`${testId}-inactive`)).toBeInTheDocument();
+    expect(screen.getByTestId(`${testId}-submit`)).toBeInTheDocument();
   });
 
   test("renders correctly when passing in initialContents", async () => {
@@ -57,7 +61,6 @@ describe("UCSBOrganizationForm tests", () => {
       expect(header).toBeInTheDocument();
     });
 
-    // orgCode should be rendered and read-only
     const orgCodeInput = await screen.findByTestId(`${testId}-orgCode`);
     expect(orgCodeInput).toBeDisabled();
     expect(screen.getByDisplayValue("SKY")).toBeInTheDocument();
@@ -90,17 +93,23 @@ describe("UCSBOrganizationForm tests", () => {
     const submitButton = await screen.findByText(/Create/);
     fireEvent.click(submitButton);
 
-    // Required fields
+    await screen.findByText(/Organization Code is required/);
     await screen.findByText(/Short Translation is required/);
     expect(screen.getByText(/Full Translation is required/)).toBeInTheDocument();
 
-    // Max length validation
     const orgCodeInput = screen.getByTestId(`${testId}-orgCode`);
     fireEvent.change(orgCodeInput, { target: { value: "a".repeat(11) } }); // max 10
     fireEvent.click(submitButton);
 
     await waitFor(() => {
       expect(screen.getByText(/Max length 10 characters/)).toBeInTheDocument();
+    });
+
+    const orgTranslationShortInput = screen.getByTestId(`${testId}-orgTranslationShort`);
+    fireEvent.change(orgTranslationShortInput, { target: { value: "a".repeat(31) } });
+    fireEvent.click(submitButton);
+    await waitFor(() => {
+      expect(screen.getByText(/Max length 30 characters/)).toBeInTheDocument();
     });
   });
 });
