@@ -103,7 +103,11 @@ describe("RecommendationRequestForm tests", () => {
     const submit = await screen.findByText(/Create/);
     fireEvent.click(submit);
 
-    await screen.findByText(/Date needed must be after or equal to date requested\./);
+    expect(
+      await screen.findByText(
+        /Date needed must be after or equal to date requested\./,
+      ),
+    ).toBeInTheDocument();
   });
 
   test("validation passes for dateNeeded when dateRequested empty (compare short-circuits)", async () => {
@@ -122,7 +126,123 @@ describe("RecommendationRequestForm tests", () => {
     fireEvent.click(submit);
 
     // We should NOT see the compare error for dateNeeded; instead, dateRequested is required
-    expect(screen.queryByText(/Date needed must be after or equal to date requested\./)).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        screen.queryByText(
+          /Date needed must be after or equal to date requested\./,
+        ),
+      ).not.toBeInTheDocument(),
+    );
     await screen.findByText(/Date requested is required\./);
+  });
+
+  test("invalid requester email prevents submit", async () => {
+    const submitSpy = vi.fn();
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <RecommendationRequestForm submitAction={submitSpy} />
+        </Router>
+      </QueryClientProvider>
+    );
+
+    fireEvent.change(screen.getByLabelText("Requester Email"), { target: { value: "invalid" } });
+    fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: "p@u.edu" } });
+    fireEvent.change(screen.getByLabelText("Explanation"), { target: { value: "x" } });
+    fireEvent.change(screen.getByLabelText("Date Requested"), { target: { value: "2024-11-02T10:00" } });
+    fireEvent.change(screen.getByLabelText("Date Needed"), { target: { value: "2024-11-22T10:00" } });
+
+    fireEvent.click(screen.getByTestId("RecommendationRequestForm-submit"));
+    // Should not submit because requesterEmail invalid
+    expect(submitSpy).not.toHaveBeenCalled();
+  });
+
+  test("invalid professor email prevents submit", async () => {
+    const submitSpy = vi.fn();
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <RecommendationRequestForm submitAction={submitSpy} />
+        </Router>
+      </QueryClientProvider>
+    );
+
+    fireEvent.change(screen.getByLabelText("Requester Email"), { target: { value: "s@u.edu" } });
+    fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: "invalid" } });
+    fireEvent.change(screen.getByLabelText("Explanation"), { target: { value: "x" } });
+    fireEvent.change(screen.getByLabelText("Date Requested"), { target: { value: "2024-11-02T10:00" } });
+    fireEvent.change(screen.getByLabelText("Date Needed"), { target: { value: "2024-11-22T10:00" } });
+
+    fireEvent.click(screen.getByTestId("RecommendationRequestForm-submit"));
+    expect(submitSpy).not.toHaveBeenCalled();
+  });
+
+  test("email max length prevents submit", async () => {
+    const submitSpy = vi.fn();
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <RecommendationRequestForm submitAction={submitSpy} />
+        </Router>
+      </QueryClientProvider>
+    );
+
+    const longEmail = `${"a".repeat(245)}@u.edu`; // >254 total length
+    fireEvent.change(screen.getByLabelText("Requester Email"), { target: { value: longEmail } });
+    fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: "p@u.edu" } });
+    fireEvent.change(screen.getByLabelText("Explanation"), { target: { value: "x" } });
+    fireEvent.change(screen.getByLabelText("Date Requested"), { target: { value: "2024-11-02T10:00" } });
+    fireEvent.change(screen.getByLabelText("Date Needed"), { target: { value: "2024-11-22T10:00" } });
+
+    fireEvent.click(screen.getByTestId("RecommendationRequestForm-submit"));
+    expect(submitSpy).not.toHaveBeenCalled();
+  });
+
+  test("explanation max length shows correct error message", async () => {
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <RecommendationRequestForm />
+        </Router>
+      </QueryClientProvider>
+    );
+
+    fireEvent.change(screen.getByLabelText("Requester Email"), { target: { value: "s@u.edu" } });
+    fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: "p@u.edu" } });
+    fireEvent.change(screen.getByLabelText("Explanation"), { target: { value: "x".repeat(2100) } });
+    fireEvent.change(screen.getByLabelText("Date Requested"), { target: { value: "2024-11-02T10:00" } });
+    fireEvent.change(screen.getByLabelText("Date Needed"), { target: { value: "2024-11-22T10:00" } });
+
+    fireEvent.click(screen.getByText(/Create/));
+
+    expect(await screen.findByText(/Max length 2000 characters/)).toBeInTheDocument();
+  });
+
+  test("dateNeeded equal to dateRequested allows submit (>=)", async () => {
+    const submitSpy = vi.fn();
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <RecommendationRequestForm submitAction={submitSpy} />
+        </Router>
+      </QueryClientProvider>
+    );
+
+    fireEvent.change(screen.getByLabelText("Requester Email"), { target: { value: "s@u.edu" } });
+    fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: "p@u.edu" } });
+    fireEvent.change(screen.getByLabelText("Explanation"), { target: { value: "x" } });
+    fireEvent.change(screen.getByLabelText("Date Requested"), { target: { value: "2024-11-02T10:00" } });
+    fireEvent.change(screen.getByLabelText("Date Needed"), { target: { value: "2024-11-02T10:00" } });
+
+    fireEvent.click(screen.getByTestId("RecommendationRequestForm-submit"));
+
+    await waitFor(() =>
+      expect(
+        screen.queryByText(
+          /Date needed must be after or equal to date requested\./,
+        ),
+      ).not.toBeInTheDocument(),
+    );
+    expect(submitSpy).toHaveBeenCalled();
   });
 });
