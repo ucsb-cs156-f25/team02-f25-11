@@ -14,7 +14,7 @@ const ucsbOrganizationFixtures = {
     },
     {
         "orgCode": "ROW",
-        "orgTranslationShort": "Rowing ",
+        "orgTranslationShort": "Rowing",
         "orgTranslation": "UCSB Rowing Club",
         "inactive": false
     },
