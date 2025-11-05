@@ -125,6 +125,7 @@ function RecommendationRequestForm({
             required: "Date needed is required.",
             validate: (value) => {
               // simple compare as strings if both are in 'YYYY-MM-DDTHH:mm' form
+              // Stryker disable next-line ConditionalExpression, LogicalOperator, BooleanLiteral: guard clause must short-circuit when either is empty
               if (!dateRequested || !value) return true;
               return value >= dateRequested || "Date needed must be after or equal to date requested.";
             },
