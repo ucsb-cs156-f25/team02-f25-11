@@ -1,29 +1,45 @@
 import React from "react";
-import RecommendationRequestForm from "main/components/RecommendationRequest/RecommendationRequestForm";
+import RecommendationRequestTable from "main/components/RecommendationRequests/RecommendationRequestTable";
 import { recommendationRequestFixtures } from "fixtures/recommendationRequestFixtures";
+import { currentUserFixtures } from "fixtures/currentUserFixtures";
+import { http, HttpResponse } from "msw";
 
 export default {
-  title: "components/RecommendationRequest/RecommendationRequestForm",
-  component: RecommendationRequestForm,
+  title: "components/RecommendationRequests/RecommendationRequestTable",
+  component: RecommendationRequestTable,
 };
 
-const Template = (args) => <RecommendationRequestForm {...args} />;
-
-export const Create = Template.bind({});
-Create.args = {
-  buttonLabel: "Create",
-  submitAction: (data) => {
-    console.log("Submit was clicked with data: ", data);
-    window.alert("Submit was clicked with data: " + JSON.stringify(data));
-  },
+const Template = (args) => {
+  return <RecommendationRequestTable {...args} />;
 };
 
-export const Update = Template.bind({});
-Update.args = {
-  initialContents: recommendationRequestFixtures.oneRequest[0],
-  buttonLabel: "Update",
-  submitAction: (data) => {
-    console.log("Submit was clicked with data: ", data);
-    window.alert("Submit was clicked with data: " + JSON.stringify(data));
-  },
+export const Empty = Template.bind({});
+
+Empty.args = {
+  requests: [],
+  currentUser: currentUserFixtures.userOnly,
+};
+
+export const ThreeItemsOrdinaryUser = Template.bind({});
+
+ThreeItemsOrdinaryUser.args = {
+  requests: recommendationRequestFixtures.threeRecommendationRequests,
+  currentUser: currentUserFixtures.userOnly,
+};
+
+export const ThreeItemsAdminUser = Template.bind({});
+ThreeItemsAdminUser.args = {
+  requests: recommendationRequestFixtures.threeRecommendationRequests,
+  currentUser: currentUserFixtures.adminUser,
+};
+
+ThreeItemsAdminUser.parameters = {
+  msw: [
+    http.delete("/api/recommendationrequests", () => {
+      return HttpResponse.json(
+        { message: "Recommendation Request deleted" },
+        { status: 200 },
+      );
+    }),
+  ],
 };
