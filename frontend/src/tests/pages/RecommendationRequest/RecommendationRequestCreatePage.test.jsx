@@ -1,7 +1,6 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import RecommendationRequestCreatePage, {
-  RECOMMENDATION_REQUESTS_ALL_KEY,
-} from "main/pages/RecommendationRequest/RecommendationRequestCreatePage";
+import RecommendationRequestCreatePage from "main/pages/RecommendationRequest/RecommendationRequestCreatePage";
+import { RECOMMENDATION_REQUESTS_ALL_KEY } from "main/pages/RecommendationRequest/keys";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router";
 

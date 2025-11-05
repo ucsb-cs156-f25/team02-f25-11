@@ -4,9 +4,7 @@ import { Navigate } from "react-router";
 import { useBackendMutation } from "main/utils/useBackend";
 import { toast } from "react-toastify";
 
-export const RECOMMENDATION_REQUESTS_ALL_KEY = [
-  "/api/recommendationrequests/all",
-];
+import { RECOMMENDATION_REQUESTS_ALL_KEY } from "./keys";
 
 export default function RecommendationRequestCreatePage({ storybook = false }) {
   const objectToAxiosParams = (req) => ({
