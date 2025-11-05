@@ -192,7 +192,6 @@ describe("RecommendationRequestForm tests", () => {
     );
 
     const longEmail = `${"a".repeat(249)}@u.edu`; // 255 total length (>254)
-    const longEmail = `${"a".repeat(249)}@u.edu`; // 255 total length (>254)
     fireEvent.change(screen.getByLabelText("Requester Email"), { target: { value: longEmail } });
     fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: "p@u.edu" } });
     fireEvent.change(screen.getByLabelText("Explanation"), { target: { value: "x" } });
@@ -317,8 +316,6 @@ describe("RecommendationRequestForm tests", () => {
     fireEvent.click(screen.getByTestId("RecommendationRequestForm-submit"));
     expect(submitSpy).not.toHaveBeenCalled();
     expect(await screen.findByText(/Enter a valid email address/)).toBeInTheDocument();
-    // Ensure the requester input is marked invalid
-    expect(screen.getByTestId("RecommendationRequestForm-requesterEmail")).toHaveClass("is-invalid");
     // Ensure the requester input is marked invalid
     expect(screen.getByTestId("RecommendationRequestForm-requesterEmail")).toHaveClass("is-invalid");
   });
