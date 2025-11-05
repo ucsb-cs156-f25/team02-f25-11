@@ -59,17 +59,20 @@ function MenuItemReviewForm({
               type="text"
               isInvalid={Boolean(errors.itemId)}
               {...register("itemId", {
-                required: true,
-                pattern: itemId_regex,
+                required: "Item ID is required.",
+                pattern: {
+                  value: /^[1-9]\d*$/,
+                  message: "Item ID must be a positive integer."
+                }
               })}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.itemId && "Item ID is required. "}
-              {errors.itemId?.type === "pattern" &&
-                "Item ID must be a positive integer."}
+              {errors.itemId?.message}
             </Form.Control.Feedback>
           </Form.Group>
         </Col>
+
+        
 
         <Col>
           <Form.Group className="mb-3">
