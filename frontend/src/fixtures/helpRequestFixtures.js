@@ -4,7 +4,7 @@ const helpRequestFixtures = {
     requesterEmail: "student@ucsb.edu",
     teamId: "Team 12",
     tableOrBreakoutRoom: "Table 1",
-    requestTime: "2025-01-18T15:09:48.15",
+    requestTime: "2025-01-18T15:09",
     explanation: "PC is stuck in reboot cycle",
     solved: true
   },
@@ -15,7 +15,7 @@ const helpRequestFixtures = {
       requesterEmail: "mike@ucsb.edu",
       teamId: "Team 3",
       tableOrBreakoutRoom: "Table 6",
-      requestTime: "2024-02-26T15:09:48.30",
+      requestTime: "2024-02-26T15:10",
       explanation: "Pushing commits strip imports",
       solved: false
     },
@@ -24,7 +24,7 @@ const helpRequestFixtures = {
       requesterEmail: "lisa@ucsb.edu",
       teamId: "Team 14",
       tableOrBreakoutRoom: "Breakout Room 4",
-      requestTime: "2025-03-21T15:09:48.45",
+      requestTime: "2025-03-21T15:11",
       explanation: "Missing permission to access Git repository",
       solved: true
     },    
@@ -33,7 +33,7 @@ const helpRequestFixtures = {
       requesterEmail: "tom@ucsb.edu",
       teamId: "Team 2",
       tableOrBreakoutRoom: "Table 17",
-      requestTime: "2025-04-30T15:09:48.00",
+      requestTime: "2025-04-30T15:12",
       explanation: "PEBKAC Error",
       solved: false
     },
