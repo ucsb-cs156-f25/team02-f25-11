@@ -66,7 +66,7 @@ function MenuItemReviewForm({
             <Form.Control.Feedback type="invalid">
               {errors.itemId && errors.itemId.type === "required" && "Item ID is required."}
               {errors.itemId?.type === "pattern" &&
-                "Item ID must be a positive integer."}
+                "Item ID must be a positive integer"}
             </Form.Control.Feedback>
           </Form.Group>
         </Col>
@@ -87,7 +87,7 @@ function MenuItemReviewForm({
             <Form.Control.Feedback type="invalid">
               {errors.reviewerEmail && errors.reviewerEmail.type === "required" && "Reviewer email is required."}
               {errors.reviewerEmail?.type === "pattern" &&
-                "Reviewer email must be a valid email address."}
+                "Reviewer email must be a valid email address"}
             </Form.Control.Feedback>
           </Form.Group>
         </Col>
@@ -108,10 +108,10 @@ function MenuItemReviewForm({
                   inRange: (value) => {
                     const num = parseInt(value, 10);
                     if (value === "0") {
-                      return "Stars input must be between 1 and 5, inclusive.";
+                      return "Stars input must be between 1 and 5, inclusive";
                     }
                     if (isNaN(num) || num < 1 || num > 5) {
-                      return "Stars value must be between 1 and 5, inclusive.";
+                      return "Stars value must be between 1 and 5, inclusive";
                     }
                     return true;
                   }
@@ -119,7 +119,7 @@ function MenuItemReviewForm({
               })}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.stars && errors.stars.type === "required" && "Stars rating is required."}
+              {errors.stars && errors.stars.type === "required" && "Stars rating is required"}
               {errors.stars?.message}
             </Form.Control.Feedback>
           </Form.Group>
@@ -139,7 +139,7 @@ function MenuItemReviewForm({
               })}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.dateReviewed && "Date reviewed is required."}
+              {errors.dateReviewed && "Date reviewed is required"}
             </Form.Control.Feedback>
           </Form.Group>
         </Col>
@@ -161,7 +161,7 @@ function MenuItemReviewForm({
             />
             <Form.Control.Feedback type="invalid">
               {errors.comments?.type === "maxLength" &&
-                "Comments must not exceed 500 characters."}
+                "Comments must not exceed 500 characters"}
             </Form.Control.Feedback>
           </Form.Group>
         </Col>
