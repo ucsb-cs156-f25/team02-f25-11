@@ -199,6 +199,11 @@
         <groupId>com.cosium.code</groupId>
         <artifactId>git-code-format-maven-plugin</artifactId>
         <version>5.3</version>
+
+        <configuration>
+            <skip>true</skip>
+        </configuration>
+
         <executions>
           <!-- On commit, format the modified files -->
           <execution>
