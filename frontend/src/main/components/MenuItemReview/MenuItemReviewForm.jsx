@@ -64,7 +64,7 @@ function MenuItemReviewForm({
               })}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.itemId && errors.itemId.type === "required" && "Item ID is required."}
+              {errors.itemId && errors.itemId.type === "required" && "Item ID is required"}
               {errors.itemId?.type === "pattern" &&
                 "Item ID must be a positive integer"}
             </Form.Control.Feedback>
