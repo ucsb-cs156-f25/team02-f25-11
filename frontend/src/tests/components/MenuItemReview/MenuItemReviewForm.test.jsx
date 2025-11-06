@@ -2,7 +2,7 @@ import { render, waitFor, fireEvent, screen } from "@testing-library/react";
 import MenuItemReviewForm from "main/components/MenuItemReview/MenuItemReviewForm";
 import { BrowserRouter as Router } from "react-router";
 import { expect } from "vitest";
-import { menuItemReviewFixtures } from "fixtures/MenuItemReviewFixtures.js";
+import { menuItemReviewFixtures } from "fixtures/MenuItemReviewFixtures";
 
 const mockedNavigate = vi.fn();
 vi.mock("react-router", async () => {
@@ -115,7 +115,7 @@ describe("MenuItemReviewForm tests", () => {
     await waitFor(() => expect(mockSubmitAction).toHaveBeenCalled());
 
     expect(
-      screen.queryByText(/Item ID must be a positive number/),
+      screen.queryByText(/Item ID must be a positive integer/),
     ).not.toBeInTheDocument();
     expect(
       screen.queryByText(/Reviewer email must be a valid email address/),
@@ -200,7 +200,7 @@ describe("MenuItemReviewForm tests", () => {
     );
   });
 
-  test("navigate(-1) is called when Cancel is clicked", async () => {
+  test("that navigate(-1) is called when Cancel is clicked", async () => {
     render(
       <Router>
         <MenuItemReviewForm />

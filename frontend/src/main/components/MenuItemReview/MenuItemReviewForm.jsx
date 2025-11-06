@@ -59,20 +59,17 @@ function MenuItemReviewForm({
               type="text"
               isInvalid={Boolean(errors.itemId)}
               {...register("itemId", {
-                required: "Item ID is required.",
-                pattern: {
-                  value: /^[1-9]\d*$/,
-                  message: "Item ID must be a positive integer."
-                }
+                required: true,
+                pattern: itemId_regex,
               })}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.itemId?.message}
+              {errors.itemId && errors.itemId.type === "required" && "Item ID is required."}
+              {errors.itemId?.type === "pattern" &&
+                "Item ID must be a positive integer."}
             </Form.Control.Feedback>
           </Form.Group>
         </Col>
-
-        
 
         <Col>
           <Form.Group className="mb-3">
@@ -88,7 +85,7 @@ function MenuItemReviewForm({
               })}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.reviewerEmail && "Reviewer email is required. "}
+              {errors.reviewerEmail && errors.reviewerEmail.type === "required" && "Reviewer email is required."}
               {errors.reviewerEmail?.type === "pattern" &&
                 "Reviewer email must be a valid email address."}
             </Form.Control.Feedback>
@@ -122,7 +119,7 @@ function MenuItemReviewForm({
               })}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.stars && errors.stars.type === "required" && "Stars rating is required. "}
+              {errors.stars && errors.stars.type === "required" && "Stars rating is required."}
               {errors.stars?.message}
             </Form.Control.Feedback>
           </Form.Group>
@@ -142,7 +139,7 @@ function MenuItemReviewForm({
               })}
             />
             <Form.Control.Feedback type="invalid">
-              {errors.dateReviewed && "Date reviewed is required. "}
+              {errors.dateReviewed && "Date reviewed is required."}
             </Form.Control.Feedback>
           </Form.Group>
         </Col>
