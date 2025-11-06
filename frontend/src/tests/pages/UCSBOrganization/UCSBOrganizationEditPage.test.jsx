@@ -152,7 +152,6 @@ describe("UCSBOrganizationEditPage tests", () => {
       expect(axiosMock.history.put[0].params).toEqual({ orgCode: "SKY" });
       expect(axiosMock.history.put[0].data).toBe(
         JSON.stringify({
-          orgCode: "SKY",
           orgTranslationShort: "Skydiving Extreme",
           orgTranslation: "UCSB Skydiving Club Updated",
           inactive: false,
