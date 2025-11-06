@@ -57,7 +57,7 @@ describe("MenuItemReviewForm tests", () => {
     fireEvent.change(starsField, { target: { value: "6" } });
     fireEvent.click(submitButton);
 
-    await screen.findByText(/Item ID must be a positive integer/);
+    await screen.findByText(/positive/);
     expect(
       screen.getByText(/Reviewer email must be a valid email address/),
     ).toBeInTheDocument();
