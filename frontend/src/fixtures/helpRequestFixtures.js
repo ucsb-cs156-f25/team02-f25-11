@@ -1,15 +1,13 @@
 const helpRequestFixtures = {
-  oneHelpRequest: [
-    {
-      id: 1,
-      requesterEmail: "student@ucsb.edu",
-      teamId: "Team 12",
-      tableOrBreakoutRoom: "Table 1",
-      requestTime: "2025-01-18T15:09:48.15",
-      explanation: "PC is stuck in reboot cycle",
-      solved: true
-    }
-  ],
+  oneHelpRequest: {
+    id: 1,
+    requesterEmail: "student@ucsb.edu",
+    teamId: "Team 12",
+    tableOrBreakoutRoom: "Table 1",
+    requestTime: "2025-01-18T15:09:48.15",
+    explanation: "PC is stuck in reboot cycle",
+    solved: true
+  },
 
   threeHelpRequests: [
     {
