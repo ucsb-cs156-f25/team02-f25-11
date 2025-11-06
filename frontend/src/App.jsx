@@ -124,8 +124,26 @@ function App() {
           <Route exact path="/ucsborganization/edit/:orgCode" element={<UCSBOrganizationEditPage />} />
           <Route exact path="/ucsborganization/create" element={<UCSBOrganizationCreatePage />} />
         </>
-      )
-}
+      )}
+      {hasRole(currentUser, "ROLE_USER") && (
+        <>
+          <Route exact path="/articles" element={<ArticlesIndexPage />} />
+        </>
+      )}
+      {hasRole(currentUser, "ROLE_ADMIN") && (
+        <>
+          <Route
+            exact
+            path="/articles/edit/:id"
+            element={<ArticlesEditPage />}
+          />
+          <Route
+            exact
+            path="/articles/create"
+            element={<ArticlesCreatePage />}
+          />
+        </>
+      )}
     </Routes>
   );
 }
