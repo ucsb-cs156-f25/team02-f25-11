@@ -27,7 +27,7 @@ Default.parameters = {
       });
     }),
     http.get("/api/articles", () => {
-      return HttpResponse.json(articlesFixtures.threeArticles[0], {
+      return HttpResponse.json(articlesFixtures.oneArticle, {
         status: 200,
       });
     }),
