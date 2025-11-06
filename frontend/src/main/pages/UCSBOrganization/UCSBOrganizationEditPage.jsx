@@ -25,7 +25,6 @@ export default function UCSBOrganizationEditPage({ storybook = false }) {
     method: "PUT",
     params: { orgCode: organization.orgCode },
     data: {
-      orgCode: organization.orgCode,
       orgTranslationShort: organization.orgTranslationShort,
       orgTranslation: organization.orgTranslation,
       inactive: organization.inactive,
