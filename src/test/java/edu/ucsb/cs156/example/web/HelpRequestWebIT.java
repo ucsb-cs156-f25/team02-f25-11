@@ -20,7 +20,7 @@ public class HelpRequestWebIT extends WebTestCase {
   public void admin_user_can_create_edit_delete_helprequest() throws Exception {
     setupUser(true);
 
-    page.getByText("Help Request").click();
+    page.getByText("HelpRequest").click();
 
     page.getByText("Create Help Request").click();
     assertThat(page.getByText("Create New Help Request")).isVisible();
@@ -78,7 +78,7 @@ public class HelpRequestWebIT extends WebTestCase {
   public void regular_user_cannot_create_restaurant() throws Exception {
     setupUser(false);
 
-    page.getByText("Help Request").click();
+    page.getByText("HelpRequest").click();
 
     assertThat(page.getByText("Create Help Request")).not().isVisible();
     assertThat(page.getByTestId("HelpRequestTable-cell-row-0-col-requesterEmail")).not().isVisible();
