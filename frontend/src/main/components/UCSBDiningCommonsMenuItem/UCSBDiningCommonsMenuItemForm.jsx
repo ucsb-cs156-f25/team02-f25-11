@@ -17,7 +17,7 @@ function UCSBDiningCommonsMenuItemForm({
 
   const navigate = useNavigate();
   
-  const testIdPrefix = "UCSBDiningCommonsMenuItem";
+  const testIdPrefix = "UCSBDiningCommonsMenuItemForm";
 
   const onSubmit = (data) => {
     submitAction?.(data);
