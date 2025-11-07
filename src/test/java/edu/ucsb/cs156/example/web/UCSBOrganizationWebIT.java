@@ -1,4 +1,4 @@
-package edu.ucsb.cs156.example.integration;
+package edu.ucsb.cs156.example.web;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -15,7 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @ActiveProfiles("integration")
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
-public class UCSBOrganizationIT extends WebTestCase {
+public class UCSBOrganizationWebIT extends WebTestCase {
   @Test
   public void admin_user_can_create_edit_delete_organization() throws Exception {
     setupUser(true);
