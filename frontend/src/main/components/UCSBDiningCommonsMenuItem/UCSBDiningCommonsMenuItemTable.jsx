@@ -19,7 +19,7 @@ export default function UCSBDiningCommonsMenuItemTable({ menuItems, currentUser 
   const deleteMutation = useBackendMutation(
     cellToAxiosParamsDelete,
     { onSuccess: onDeleteSuccess },
-    ["/api/ucsbdiningcommonsmenuitem"]
+    ["/api/ucsb-dining-commons-menu-items/all"]
   );
   // Stryker restore all
 
