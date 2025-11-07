@@ -1,6 +1,6 @@
 import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
 import RecommendationRequestForm from "main/components/RecommendationRequests/RecommendationRequestForm";
-import { Navigate } from "react-router";
+import { Navigate } from "react-router-dom";
 import { useBackendMutation } from "main/utils/useBackend";
 import { toast } from "react-toastify";
 
@@ -22,14 +22,14 @@ export default function RecommendationRequestCreatePage({ storybook = false }) {
 
   const onSuccess = (saved) => {
     toast(
-      `New Recommendation Request Created - id: ${saved.id} requester: ${saved.requesterEmail}`,
+      `New Recommendation Request Created - id: ${saved.id} requester: ${saved.requesterEmail}`
     );
   };
 
   const mutation = useBackendMutation(
     objectToAxiosParams,
     { onSuccess },
-    RECOMMENDATION_REQUESTS_ALL_KEY,
+    RECOMMENDATION_REQUESTS_ALL_KEY
   );
 
   const { isSuccess } = mutation;

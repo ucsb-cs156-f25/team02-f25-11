@@ -2,13 +2,14 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import RecommendationRequestCreatePage from "main/pages/RecommendationRequest/RecommendationRequestCreatePage";
 import { RECOMMENDATION_REQUESTS_ALL_KEY } from "main/pages/RecommendationRequest/keys";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { MemoryRouter } from "react-router";
+import { MemoryRouter } from "react-router-dom";
 
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
 
+// --- Mocks ---
 const mockToast = vi.fn();
 vi.mock("react-toastify", async (importOriginal) => {
   const originalModule = await importOriginal();
@@ -19,10 +20,11 @@ vi.mock("react-toastify", async (importOriginal) => {
 });
 
 const mockNavigate = vi.fn();
-vi.mock("react-router", async (importOriginal) => {
+vi.mock("react-router-dom", async (importOriginal) => {
   const originalModule = await importOriginal();
   return {
     ...originalModule,
+    // preserve real MemoryRouter, Link, etc. but stub Navigate
     Navigate: vi.fn((x) => {
       mockNavigate(x);
       return null;
@@ -30,6 +32,7 @@ vi.mock("react-router", async (importOriginal) => {
   };
 });
 
+// --- Tests ---
 describe("RecommendationRequestCreatePage tests", () => {
   const axiosMock = new AxiosMockAdapter(axios);
 
@@ -45,7 +48,14 @@ describe("RecommendationRequestCreatePage tests", () => {
       .reply(200, systemInfoFixtures.showingNeither);
   });
 
-  const queryClient = new QueryClient();
+  const renderWithProviders = (ui) => {
+    const queryClient = new QueryClient();
+    return render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>{ui}</MemoryRouter>
+      </QueryClientProvider>
+    );
+  };
 
   test("mutation cache key is correct", () => {
     expect(RECOMMENDATION_REQUESTS_ALL_KEY).toEqual([
@@ -54,13 +64,7 @@ describe("RecommendationRequestCreatePage tests", () => {
   });
 
   test("renders form", async () => {
-    render(
-      <QueryClientProvider client={queryClient}>
-        <MemoryRouter>
-          <RecommendationRequestCreatePage />
-        </MemoryRouter>
-      </QueryClientProvider>,
-    );
+    renderWithProviders(<RecommendationRequestCreatePage />);
 
     await waitFor(() => {
       expect(screen.getByLabelText("Requester Email")).toBeInTheDocument();
@@ -80,13 +84,7 @@ describe("RecommendationRequestCreatePage tests", () => {
 
     axiosMock.onPost("/api/recommendationrequests/post").reply(202, saved);
 
-    render(
-      <QueryClientProvider client={queryClient}>
-        <MemoryRouter>
-          <RecommendationRequestCreatePage />
-        </MemoryRouter>
-      </QueryClientProvider>,
-    );
+    renderWithProviders(<RecommendationRequestCreatePage />);
 
     await waitFor(() => {
       expect(screen.getByLabelText("Requester Email")).toBeInTheDocument();
@@ -121,19 +119,13 @@ describe("RecommendationRequestCreatePage tests", () => {
     });
 
     expect(mockToast).toBeCalledWith(
-      "New Recommendation Request Created - id: 5 requester: student@ucsb.edu",
+      "New Recommendation Request Created - id: 5 requester: student@ucsb.edu"
     );
     expect(mockNavigate).toBeCalledWith({ to: "/recommendationrequest" });
   });
 
   test("invalid dates prevent submit and show error", async () => {
-    render(
-      <QueryClientProvider client={queryClient}>
-        <MemoryRouter>
-          <RecommendationRequestCreatePage />
-        </MemoryRouter>
-      </QueryClientProvider>,
-    );
+    renderWithProviders(<RecommendationRequestCreatePage />);
 
     await waitFor(() => {
       expect(screen.getByLabelText("Requester Email")).toBeInTheDocument();
@@ -160,8 +152,8 @@ describe("RecommendationRequestCreatePage tests", () => {
     await waitFor(() => {
       expect(
         screen.getByText(
-          "Date needed must be after or equal to date requested.",
-        ),
+          "Date needed must be after or equal to date requested."
+        )
       ).toBeInTheDocument();
     });
 
