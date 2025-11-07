@@ -26,7 +26,7 @@ export default function UCSBDiningCommonsMenuItemIndexPage() {
       return (
         <Button
           variant="primary"
-          href="/ucsbdiningcommonsmenuitems/create"
+          href="/ucsbdiningcommonsmenuitem/create"
           style={{ float: "right" }}
         >
           Create UCSB Dining Commons Menu Item
@@ -35,6 +35,8 @@ export default function UCSBDiningCommonsMenuItemIndexPage() {
     }
   };
 
+
+  
   return (
     <BasicLayout>
       <div className="pt-2">
