@@ -1,4 +1,4 @@
-package edu.ucsb.cs156.example.web;
+package edu.ucsb.cs156.example.integration;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
