@@ -26,7 +26,7 @@ Empty.parameters = {
         status: 200,
       });
     }),
-    http.get("/api/ucsbdates/all", () => {
+    http.get("/api/articles/all", () => {
       return HttpResponse.json([], { status: 200 });
     }),
   ],

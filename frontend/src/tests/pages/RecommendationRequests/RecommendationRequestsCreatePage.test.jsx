@@ -37,8 +37,12 @@ describe("RecommendationRequestsCreatePage tests", () => {
     vi.clearAllMocks();
     axiosMock.reset();
     axiosMock.resetHistory();
-    axiosMock.onGet("/api/currentUser").reply(200, apiCurrentUserFixtures.userOnly);
-    axiosMock.onGet("/api/systemInfo").reply(200, systemInfoFixtures.showingNeither);
+    axiosMock
+      .onGet("/api/currentUser")
+      .reply(200, apiCurrentUserFixtures.userOnly);
+    axiosMock
+      .onGet("/api/systemInfo")
+      .reply(200, systemInfoFixtures.showingNeither);
   });
 
   const queryClient = new QueryClient();
@@ -82,11 +86,21 @@ describe("RecommendationRequestsCreatePage tests", () => {
       expect(screen.getByLabelText("Requester Email")).toBeInTheDocument();
     });
 
-    fireEvent.change(screen.getByLabelText("Requester Email"), { target: { value: "student@ucsb.edu" } });
-    fireEvent.change(screen.getByLabelText("Professor Email"), { target: { value: "prof@ucsb.edu" } });
-    fireEvent.change(screen.getByLabelText("Explanation"), { target: { value: "Need letter" } });
-    fireEvent.change(screen.getByLabelText("Date Requested"), { target: { value: "2024-11-01T10:00" } });
-    fireEvent.change(screen.getByLabelText("Date Needed"), { target: { value: "2024-11-20T10:00" } });
+    fireEvent.change(screen.getByLabelText("Requester Email"), {
+      target: { value: "student@ucsb.edu" },
+    });
+    fireEvent.change(screen.getByLabelText("Professor Email"), {
+      target: { value: "prof@ucsb.edu" },
+    });
+    fireEvent.change(screen.getByLabelText("Explanation"), {
+      target: { value: "Need letter" },
+    });
+    fireEvent.change(screen.getByLabelText("Date Requested"), {
+      target: { value: "2024-11-01T10:00" },
+    });
+    fireEvent.change(screen.getByLabelText("Date Needed"), {
+      target: { value: "2024-11-20T10:00" },
+    });
     fireEvent.click(screen.getByText("Create"));
 
     await waitFor(() => expect(axiosMock.history.post.length).toBe(1));
@@ -106,5 +120,3 @@ describe("RecommendationRequestsCreatePage tests", () => {
     expect(mockNavigate).toBeCalledWith({ to: "/recommendationrequests" });
   });
 });
-
-

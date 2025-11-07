@@ -40,9 +40,15 @@ describe("RecommendationRequestsEditPage tests", () => {
       axiosMock = new AxiosMockAdapter(axios);
       axiosMock.reset();
       axiosMock.resetHistory();
-      axiosMock.onGet("/api/currentUser").reply(200, apiCurrentUserFixtures.userOnly);
-      axiosMock.onGet("/api/systemInfo").reply(200, systemInfoFixtures.showingNeither);
-      axiosMock.onGet("/api/recommendationrequests", { params: { id: 17 } }).timeout();
+      axiosMock
+        .onGet("/api/currentUser")
+        .reply(200, apiCurrentUserFixtures.userOnly);
+      axiosMock
+        .onGet("/api/systemInfo")
+        .reply(200, systemInfoFixtures.showingNeither);
+      axiosMock
+        .onGet("/api/recommendationrequests", { params: { id: 17 } })
+        .timeout();
     });
 
     afterEach(() => {
@@ -64,7 +70,9 @@ describe("RecommendationRequestsEditPage tests", () => {
         </QueryClientProvider>,
       );
       await screen.findByText("Edit Recommendation Request");
-      expect(screen.queryByTestId("RecommendationRequestForm-id")).not.toBeInTheDocument();
+      expect(
+        screen.queryByTestId("RecommendationRequestForm-id"),
+      ).not.toBeInTheDocument();
       restoreConsole();
     });
   });
@@ -74,17 +82,23 @@ describe("RecommendationRequestsEditPage tests", () => {
       axiosMock = new AxiosMockAdapter(axios);
       axiosMock.reset();
       axiosMock.resetHistory();
-      axiosMock.onGet("/api/currentUser").reply(200, apiCurrentUserFixtures.userOnly);
-      axiosMock.onGet("/api/systemInfo").reply(200, systemInfoFixtures.showingNeither);
-      axiosMock.onGet("/api/recommendationrequests", { params: { id: 17 } }).reply(200, {
-        id: 17,
-        requesterEmail: "student@ucsb.edu",
-        professorEmail: "prof@ucsb.edu",
-        explanation: "Need letter",
-        dateRequested: "2024-11-01T10:00",
-        dateNeeded: "2024-11-20T10:00",
-        done: false,
-      });
+      axiosMock
+        .onGet("/api/currentUser")
+        .reply(200, apiCurrentUserFixtures.userOnly);
+      axiosMock
+        .onGet("/api/systemInfo")
+        .reply(200, systemInfoFixtures.showingNeither);
+      axiosMock
+        .onGet("/api/recommendationrequests", { params: { id: 17 } })
+        .reply(200, {
+          id: 17,
+          requesterEmail: "student@ucsb.edu",
+          professorEmail: "prof@ucsb.edu",
+          explanation: "Need letter",
+          dateRequested: "2024-11-01T10:00",
+          dateNeeded: "2024-11-20T10:00",
+          done: false,
+        });
       axiosMock.onPut("/api/recommendationrequests").reply(200, {
         id: 17,
         requesterEmail: "student2@ucsb.edu",
@@ -117,13 +131,25 @@ describe("RecommendationRequestsEditPage tests", () => {
       await screen.findByTestId("RecommendationRequestForm-id");
 
       const idField = screen.getByTestId("RecommendationRequestForm-id");
-      const requesterField = screen.getByTestId("RecommendationRequestForm-requesterEmail");
-      const professorField = screen.getByTestId("RecommendationRequestForm-professorEmail");
-      const explanationField = screen.getByTestId("RecommendationRequestForm-explanation");
-      const dateRequestedField = screen.getByTestId("RecommendationRequestForm-dateRequested");
-      const dateNeededField = screen.getByTestId("RecommendationRequestForm-dateNeeded");
+      const requesterField = screen.getByTestId(
+        "RecommendationRequestForm-requesterEmail",
+      );
+      const professorField = screen.getByTestId(
+        "RecommendationRequestForm-professorEmail",
+      );
+      const explanationField = screen.getByTestId(
+        "RecommendationRequestForm-explanation",
+      );
+      const dateRequestedField = screen.getByTestId(
+        "RecommendationRequestForm-dateRequested",
+      );
+      const dateNeededField = screen.getByTestId(
+        "RecommendationRequestForm-dateNeeded",
+      );
       const doneField = screen.getByTestId("RecommendationRequestForm-done");
-      const submitButton = screen.getByTestId("RecommendationRequestForm-submit");
+      const submitButton = screen.getByTestId(
+        "RecommendationRequestForm-submit",
+      );
 
       expect(idField).toBeInTheDocument();
       expect(idField).toHaveValue("17");
@@ -139,11 +165,17 @@ describe("RecommendationRequestsEditPage tests", () => {
 
       expect(submitButton).toHaveTextContent("Update");
 
-      fireEvent.change(requesterField, { target: { value: "student2@ucsb.edu" } });
+      fireEvent.change(requesterField, {
+        target: { value: "student2@ucsb.edu" },
+      });
       fireEvent.change(professorField, { target: { value: "prof2@ucsb.edu" } });
       fireEvent.change(explanationField, { target: { value: "Updated" } });
-      fireEvent.change(dateRequestedField, { target: { value: "2024-11-02T10:00" } });
-      fireEvent.change(dateNeededField, { target: { value: "2024-11-22T10:00" } });
+      fireEvent.change(dateRequestedField, {
+        target: { value: "2024-11-02T10:00" },
+      });
+      fireEvent.change(dateNeededField, {
+        target: { value: "2024-11-22T10:00" },
+      });
       // toggle done to true
       fireEvent.click(doneField);
       fireEvent.click(submitButton);
@@ -170,5 +202,3 @@ describe("RecommendationRequestsEditPage tests", () => {
     });
   });
 });
-
-
