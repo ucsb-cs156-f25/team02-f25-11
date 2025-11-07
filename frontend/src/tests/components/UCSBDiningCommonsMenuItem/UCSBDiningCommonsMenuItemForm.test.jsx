@@ -1,0 +1,211 @@
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { BrowserRouter as Router } from "react-router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { expect } from "vitest";
+
+import UCSBDiningCommonsMenuItemForm from "main/components/UCSBDiningCommonsMenuItem/UCSBDiningCommonsMenuItemForm";
+import { ucsbDiningCommonsMenuItemFixtures } from "fixtures/ucsbDiningCommonsMenuItemFixtures";
+
+const mockedNavigate = vi.fn();
+
+vi.mock("react-router", async () => {
+  const originalModule = await vi.importActual("react-router");
+  return {
+    ...originalModule,
+    useNavigate: () => mockedNavigate,
+  };
+});
+
+describe("UCSBDiningCommonsMenuItemForm tests", () => {
+  const queryClient = new QueryClient();
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  test("renders correctly", async () => {
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <UCSBDiningCommonsMenuItemForm />
+        </Router>
+      </QueryClientProvider>
+    );
+
+    await screen.findByText(/Dining Commons Code/);
+    await screen.findByText(/Create/);
+    expect(screen.getByText(/Dining Commons Code/)).toBeInTheDocument();
+  });
+
+  test("renders correctly when passing in initialContents", async () => {
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <UCSBDiningCommonsMenuItemForm initialContents={ucsbDiningCommonsMenuItemFixtures.oneMenuItem[0]} />
+        </Router>
+      </QueryClientProvider>
+    );
+
+    await screen.findByTestId(/UCSBDiningCommonsMenuItemForm-id/);
+    expect(screen.getByText(/Id/)).toBeInTheDocument();
+    expect(screen.getByTestId(/UCSBDiningCommonsMenuItemForm-id/)).toHaveValue("1");
+  });
+
+  test("that navigate(-1) is called when Cancel is clicked", async () => {
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <UCSBDiningCommonsMenuItemForm />
+        </Router>
+      </QueryClientProvider>
+    );
+    await screen.findByTestId("UCSBDiningCommonsMenuItemForm-cancel");
+    const cancelButton = screen.getByTestId("UCSBDiningCommonsMenuItemForm-cancel");
+
+    fireEvent.click(cancelButton);
+
+    await waitFor(() => expect(mockedNavigate).toHaveBeenCalledWith(-1));
+  });
+
+  test("that validation is performed", async () => {
+    const mockSubmitAction = vi.fn();
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <UCSBDiningCommonsMenuItemForm submitAction={mockSubmitAction} />
+        </Router>
+      </QueryClientProvider>
+    );
+
+    expect(await screen.findByTestId("UCSBDiningCommonsMenuItemForm-diningCommonsCode")).toBeInTheDocument();
+    const submitButton = screen.getByTestId("UCSBDiningCommonsMenuItemForm-submit");
+
+    fireEvent.click(submitButton);
+
+    await screen.findByText(/Dining Commons Code is required./);
+    expect(screen.getByText(/Name is required./)).toBeInTheDocument();
+    expect(screen.getByText(/Station is required./)).toBeInTheDocument();
+    expect(mockSubmitAction).not.toBeCalled();
+
+    const diningCommonsCodeInput = screen.getByTestId("UCSBDiningCommonsMenuItemForm-diningCommonsCode");
+    const nameInput = screen.getByTestId("UCSBDiningCommonsMenuItemForm-name");
+    const stationInput = screen.getByTestId("UCSBDiningCommonsMenuItemForm-station");
+
+    fireEvent.change(diningCommonsCodeInput, { target: { value: "a".repeat(31) } });
+    fireEvent.change(nameInput, { target: { value: "a".repeat(31) } });
+    fireEvent.change(stationInput, { target: { value: "a".repeat(31) } });
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(screen.getAllByText(/Max length 30 characters/)).toHaveLength(3);
+    });
+    expect(mockSubmitAction).not.toBeCalled();
+  });
+
+  test("handles submit without submitAction callback", async () => {
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <UCSBDiningCommonsMenuItemForm />
+        </Router>
+      </QueryClientProvider>
+    );
+
+    await screen.findByTestId("UCSBDiningCommonsMenuItemForm-diningCommonsCode");
+
+    const diningCommonsCodeField = screen.getByTestId("UCSBDiningCommonsMenuItemForm-diningCommonsCode");
+    const nameField = screen.getByTestId("UCSBDiningCommonsMenuItemForm-name");
+    const stationField = screen.getByTestId("UCSBDiningCommonsMenuItemForm-station");
+    const submitButton = screen.getByTestId("UCSBDiningCommonsMenuItemForm-submit");
+
+    // Fill in the form
+    fireEvent.change(diningCommonsCodeField, { target: { value: "DLG" } });
+    fireEvent.change(nameField, { target: { value: "Pizza" } });
+    fireEvent.change(stationField, { target: { value: "Pizza Station" } });
+
+    // Verify initial values
+    expect(diningCommonsCodeField.value).toBe("DLG");
+    expect(nameField.value).toBe("Pizza");
+    expect(stationField.value).toBe("Pizza Station");
+
+    // Submit form
+    fireEvent.click(submitButton);
+
+    // Form should not throw any errors when submitted without submitAction
+    await waitFor(() => {
+      expect(screen.queryByText(/Error/)).not.toBeInTheDocument();
+      // Fields should retain their values since no submitAction was provided
+      expect(diningCommonsCodeField.value).toBe("DLG");
+      expect(nameField.value).toBe("Pizza");
+      expect(stationField.value).toBe("Pizza Station");
+    });
+  });
+
+  test("has correct button layout and spacing", async () => {
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <UCSBDiningCommonsMenuItemForm />
+        </Router>
+      </QueryClientProvider>
+    );
+
+    await screen.findByTestId("UCSBDiningCommonsMenuItemForm-submit");
+    const submitButton = screen.getByTestId("UCSBDiningCommonsMenuItemForm-submit");
+    const cancelButton = screen.getByTestId("UCSBDiningCommonsMenuItemForm-cancel");
+
+    // Get the buttons container
+    const buttonsContainer = submitButton.closest('.d-flex');
+    expect(buttonsContainer).toHaveClass('d-flex', 'gap-2');
+
+    // Verify both buttons are in the container and in the correct order
+    const buttons = buttonsContainer.querySelectorAll('button');
+    expect(buttons[0]).toBe(submitButton);
+    expect(buttons[1]).toBe(cancelButton);
+
+    // Verify button styling
+    expect(submitButton).toHaveClass('btn', 'btn-primary');
+    expect(cancelButton).toHaveClass('btn', 'btn-secondary');
+
+    // Verify button text content
+    expect(submitButton).toHaveTextContent('Create');
+    expect(cancelButton).toHaveTextContent('Cancel');
+
+    // Verify button attributes
+    expect(submitButton).toHaveAttribute('type', 'submit');
+    expect(cancelButton).toHaveAttribute('type', 'button');
+  });
+
+  test("No errors when good data is entered", async () => {
+    const mockSubmitAction = vi.fn();
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <UCSBDiningCommonsMenuItemForm submitAction={mockSubmitAction} />
+        </Router>
+      </QueryClientProvider>
+    );
+
+    await screen.findByTestId("UCSBDiningCommonsMenuItemForm-diningCommonsCode");
+
+    const diningCommonsCodeField = screen.getByTestId("UCSBDiningCommonsMenuItemForm-diningCommonsCode");
+    const nameField = screen.getByTestId("UCSBDiningCommonsMenuItemForm-name");
+    const stationField = screen.getByTestId("UCSBDiningCommonsMenuItemForm-station");
+    const submitButton = screen.getByTestId("UCSBDiningCommonsMenuItemForm-submit");
+
+    fireEvent.change(diningCommonsCodeField, { target: { value: "DLG" } });
+    fireEvent.change(nameField, { target: { value: "Pizza" } });
+    fireEvent.change(stationField, { target: { value: "Pizza Station" } });
+
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(mockSubmitAction).toHaveBeenCalledWith({
+        diningCommonsCode: "DLG",
+        name: "Pizza",
+        station: "Pizza Station"
+      });
+    });
+  });
+});
