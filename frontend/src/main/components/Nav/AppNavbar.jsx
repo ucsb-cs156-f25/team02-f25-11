@@ -9,7 +9,7 @@ export default function AppNavbar({
   doLogout,
   currentUrl = window.location.href,
 }) {
-  const oauthLogin = systemInfo?.oauthLogin || "/oauth2/authorization/google";
+  var oauthLogin = systemInfo?.oauthLogin || "/oauth2/authorization/google";
 
   return (
     <>
@@ -46,11 +46,11 @@ export default function AppNavbar({
           </Nav>
 
           <>
-            {/* be sure that each NavDropdown has a unique id and data-testid */}
+            {/* be sure that each NavDropdown has a unique id and data-testid  */}
           </>
 
           <Navbar.Collapse className="justify-content-between">
-            <Nav className="me-auto">
+            <Nav className="mr-auto">
               {hasRole(currentUser, "ROLE_ADMIN") && (
                 <NavDropdown
                   title="Admin"
@@ -60,20 +60,13 @@ export default function AppNavbar({
                   <NavDropdown.Item href="/admin/users">Users</NavDropdown.Item>
                 </NavDropdown>
               )}
-
               {currentUser && currentUser.loggedIn ? (
                 <>
                   <Nav.Link as={Link} to="/restaurants">
                     Restaurants
                   </Nav.Link>
-                  <Nav.Link as={Link} to="/ucsborganization">
-                    UCSBOrganization
-                  </Nav.Link>
                   <Nav.Link as={Link} to="/ucsbdates">
                     UCSB Dates
-                  </Nav.Link>
-                  <Nav.Link as={Link} to="/articles">
-                    Articles
                   </Nav.Link>
                   <Nav.Link as={Link} to="/placeholder">
                     Placeholder
@@ -81,8 +74,6 @@ export default function AppNavbar({
                   {/* Changed from NavLink to Link and now it is working */}
                   <Nav.Link as={Link} to="/ucsbdiningcommonsmenuitem">
                     UCSBDiningCommonsMenuItem
-                  <Nav.Link as={Link} to="/recommendationrequest">
-                    RecommendationRequest
                   </Nav.Link>
                 </>
               ) : (
@@ -90,7 +81,7 @@ export default function AppNavbar({
               )}
             </Nav>
 
-            <Nav className="ms-auto">
+            <Nav className="ml-auto">
               {currentUser && currentUser.loggedIn ? (
                 <>
                   <Navbar.Text className="me-3" as={Link} to="/profile">
