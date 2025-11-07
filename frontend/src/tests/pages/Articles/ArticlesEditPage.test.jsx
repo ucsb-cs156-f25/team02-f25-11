@@ -91,7 +91,7 @@ describe("ArticlesEditPage tests", () => {
       axiosMock.onGet("/api/articles", { params: { id: 17 } }).reply(200, {
         id: 17,
         title: "Original Title",
-        url: "https://www.youtube.com/",
+        url: "https://google.com", 
         explanation: "Original explanation",
         email: "original@ucsb.edu",
         dateAdded: "2022-03-14T15:00",
@@ -99,7 +99,7 @@ describe("ArticlesEditPage tests", () => {
       axiosMock.onPut("/api/articles").reply(200, {
         id: "17",
         title: "New Title",
-        url: "https://www.google.com/",
+        url: "https://youtube.com", 
         explanation: "New explanation",
         email: "new@ucsb.edu",
         dateAdded: "2023-01-01T12:00",
@@ -148,7 +148,7 @@ describe("ArticlesEditPage tests", () => {
 
       expect(idField).toHaveValue("17");
       expect(titleField).toHaveValue("Original Title");
-      expect(urlField).toHaveValue("https://www.youtube.com/");
+      expect(urlField).toHaveValue("https://google.com"); 
       expect(explanationField).toHaveValue("Original explanation");
       expect(emailField).toHaveValue("original@ucsb.edu");
       expect(dateAddedField).toHaveValue("2022-03-14T15:00");
@@ -176,7 +176,7 @@ describe("ArticlesEditPage tests", () => {
 
       expect(idField).toHaveValue("17");
       expect(titleField).toHaveValue("Original Title");
-      expect(urlField).toHaveValue("https://www.youtube.com/");
+      expect(urlField).toHaveValue("https://google.com"); 
       expect(explanationField).toHaveValue("Original explanation");
       expect(emailField).toHaveValue("original@ucsb.edu");
       expect(dateAddedField).toHaveValue("2022-03-14T15:00");
@@ -184,7 +184,7 @@ describe("ArticlesEditPage tests", () => {
       expect(submitButton).toBeInTheDocument();
 
       fireEvent.change(titleField, { target: { value: "New Title" } });
-      fireEvent.change(urlField, { target: { value: "https://www.google.com/" } });
+      fireEvent.change(urlField, { target: { value: "https://youtube.com" } }); 
       fireEvent.change(explanationField, {
         target: { value: "New explanation" },
       });
@@ -206,7 +206,7 @@ describe("ArticlesEditPage tests", () => {
       expect(axiosMock.history.put[0].data).toBe(
         JSON.stringify({
           title: "New Title",
-          url: "https://www.google.com/",
+          url: "https://youtube.com",  
           explanation: "New explanation",
           email: "new@ucsb.edu",
           dateAdded: "2023-01-01T12:00",
