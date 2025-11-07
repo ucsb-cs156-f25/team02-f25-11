@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-f25/team02-f25-11
 owner: ucsb-cs156-f25
 repo_name: team02-f25-11
-pull_requests: [{"author":{"id":"U_kgDOCNoLqQ","is_bot":false,"login":"SagnikBiswasUCSB","name":""},"headRefName":"recommendationrequest-integration","number":114,"title":"finished integration testing","url":"https://github.com/ucsb-cs156-f25/team02-f25-11/pull/114"}]
+pull_requests: [{"author":{"id":"U_kgDOCNnsTg","is_bot":false,"login":"EthanChung137","name":""},"headRefName":"EthanChung137-AppNavBar-Update","number":115,"title":"Updated AppNavBar.jsx","url":"https://github.com/ucsb-cs156-f25/team02-f25-11/pull/115"},{"author":{"id":"U_kgDOCNoLqQ","is_bot":false,"login":"SagnikBiswasUCSB","name":""},"headRefName":"recommendationrequest-integration","number":114,"title":"finished integration testing","url":"https://github.com/ucsb-cs156-f25/team02-f25-11/pull/114"}]
