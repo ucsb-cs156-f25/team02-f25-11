@@ -2,7 +2,7 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import RecommendationRequestCreatePage from "main/pages/RecommendationRequest/RecommendationRequestCreatePage";
 import { RECOMMENDATION_REQUESTS_ALL_KEY } from "main/pages/RecommendationRequest/keys";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router"; // <-- revert to react-router
 
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
@@ -20,11 +20,10 @@ vi.mock("react-toastify", async (importOriginal) => {
 });
 
 const mockNavigate = vi.fn();
-vi.mock("react-router-dom", async (importOriginal) => {
+vi.mock("react-router", async (importOriginal) => { // <-- mock the core package
   const originalModule = await importOriginal();
   return {
     ...originalModule,
-    // preserve real MemoryRouter, Link, etc. but stub Navigate
     Navigate: vi.fn((x) => {
       mockNavigate(x);
       return null;
@@ -32,7 +31,6 @@ vi.mock("react-router-dom", async (importOriginal) => {
   };
 });
 
-// --- Tests ---
 describe("RecommendationRequestCreatePage tests", () => {
   const axiosMock = new AxiosMockAdapter(axios);
 
@@ -65,7 +63,6 @@ describe("RecommendationRequestCreatePage tests", () => {
 
   test("renders form", async () => {
     renderWithProviders(<RecommendationRequestCreatePage />);
-
     await waitFor(() => {
       expect(screen.getByLabelText("Requester Email")).toBeInTheDocument();
     });
@@ -108,7 +105,6 @@ describe("RecommendationRequestCreatePage tests", () => {
     fireEvent.click(screen.getByText("Create"));
 
     await waitFor(() => expect(axiosMock.history.post.length).toBe(1));
-
     expect(axiosMock.history.post[0].params).toEqual({
       requesterEmail: "student@ucsb.edu",
       professorEmail: "prof@ucsb.edu",
