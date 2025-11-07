@@ -9,6 +9,7 @@ import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
 
+// --- Mocks ---
 const mockToast = vi.fn();
 vi.mock("react-toastify", async (importOriginal) => {
   const originalModule = await importOriginal();
@@ -37,15 +38,18 @@ describe("RecommendationRequestCreatePage tests", () => {
     vi.clearAllMocks();
     axiosMock.reset();
     axiosMock.resetHistory();
-    axiosMock
-      .onGet("/api/currentUser")
-      .reply(200, apiCurrentUserFixtures.userOnly);
-    axiosMock
-      .onGet("/api/systemInfo")
-      .reply(200, systemInfoFixtures.showingNeither);
+    axiosMock.onGet("/api/currentUser").reply(200, apiCurrentUserFixtures.userOnly);
+    axiosMock.onGet("/api/systemInfo").reply(200, systemInfoFixtures.showingNeither);
   });
 
-  const queryClient = new QueryClient();
+  const renderWithProviders = (ui) => {
+    const queryClient = new QueryClient();
+    return render(
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter>{ui}</MemoryRouter>
+      </QueryClientProvider>
+    );
+  };
 
   test("mutation cache key is correct", () => {
     expect(RECOMMENDATION_REQUESTS_ALL_KEY).toEqual([
@@ -54,14 +58,7 @@ describe("RecommendationRequestCreatePage tests", () => {
   });
 
   test("renders form", async () => {
-    render(
-      <QueryClientProvider client={queryClient}>
-        <MemoryRouter>
-          <RecommendationRequestCreatePage />
-        </MemoryRouter>
-      </QueryClientProvider>,
-    );
-
+    renderWithProviders(<RecommendationRequestCreatePage />);
     await waitFor(() => {
       expect(screen.getByLabelText("Requester Email")).toBeInTheDocument();
     });
@@ -80,13 +77,7 @@ describe("RecommendationRequestCreatePage tests", () => {
 
     axiosMock.onPost("/api/recommendationrequests/post").reply(202, saved);
 
-    render(
-      <QueryClientProvider client={queryClient}>
-        <MemoryRouter>
-          <RecommendationRequestCreatePage />
-        </MemoryRouter>
-      </QueryClientProvider>,
-    );
+    renderWithProviders(<RecommendationRequestCreatePage />);
 
     await waitFor(() => {
       expect(screen.getByLabelText("Requester Email")).toBeInTheDocument();
@@ -121,19 +112,13 @@ describe("RecommendationRequestCreatePage tests", () => {
     });
 
     expect(mockToast).toBeCalledWith(
-      "New Recommendation Request Created - id: 5 requester: student@ucsb.edu",
+      "New Recommendation Request Created - id: 5 requester: student@ucsb.edu"
     );
     expect(mockNavigate).toBeCalledWith({ to: "/recommendationrequest" });
   });
 
   test("invalid dates prevent submit and show error", async () => {
-    render(
-      <QueryClientProvider client={queryClient}>
-        <MemoryRouter>
-          <RecommendationRequestCreatePage />
-        </MemoryRouter>
-      </QueryClientProvider>,
-    );
+    renderWithProviders(<RecommendationRequestCreatePage />);
 
     await waitFor(() => {
       expect(screen.getByLabelText("Requester Email")).toBeInTheDocument();
@@ -159,9 +144,7 @@ describe("RecommendationRequestCreatePage tests", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText(
-          "Date needed must be after or equal to date requested.",
-        ),
+        screen.getByText("Date needed must be after or equal to date requested.")
       ).toBeInTheDocument();
     });
 
