@@ -45,7 +45,9 @@ export default function RecommendationRequestTable({
 
   if (hasRole(currentUser, "ROLE_ADMIN")) {
     columns.push(ButtonColumn("Edit", "primary", editCallback, testIdPrefix));
-    columns.push(ButtonColumn("Delete", "danger", deleteCallback, testIdPrefix));
+    columns.push(
+      ButtonColumn("Delete", "danger", deleteCallback, testIdPrefix),
+    );
   }
 
   return <OurTable data={requests} columns={columns} testid={testIdPrefix} />;

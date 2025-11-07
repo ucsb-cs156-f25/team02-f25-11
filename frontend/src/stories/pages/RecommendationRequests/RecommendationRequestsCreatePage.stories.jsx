@@ -26,9 +26,10 @@ Default.parameters = {
       });
     }),
     http.post("/api/recommendationrequests/post", () => {
-      return HttpResponse.json({ id: 1, requesterEmail: "student@ucsb.edu" }, { status: 200 });
+      return HttpResponse.json(
+        { id: 1, requesterEmail: "student@ucsb.edu" },
+        { status: 200 },
+      );
     }),
   ],
 };
-
-

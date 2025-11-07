@@ -41,14 +41,21 @@ describe("RecommendationRequestTable tests", () => {
     render(
       <QueryClientProvider client={queryClient}>
         <MemoryRouter>
-          <RecommendationRequestTable requests={[]} currentUser={currentUserFixtures.adminUser} />
+          <RecommendationRequestTable
+            requests={[]}
+            currentUser={currentUserFixtures.adminUser}
+          />
         </MemoryRouter>
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
 
-    expectedHeaders.forEach((h) => expect(screen.getByText(h)).toBeInTheDocument());
+    expectedHeaders.forEach((h) =>
+      expect(screen.getByText(h)).toBeInTheDocument(),
+    );
     expectedFields.forEach((f) =>
-      expect(screen.queryByTestId(`${testId}-cell-row-0-col-${f}`)).not.toBeInTheDocument()
+      expect(
+        screen.queryByTestId(`${testId}-cell-row-0-col-${f}`),
+      ).not.toBeInTheDocument(),
     );
   });
 
@@ -61,17 +68,24 @@ describe("RecommendationRequestTable tests", () => {
             currentUser={currentUserFixtures.adminUser}
           />
         </MemoryRouter>
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
 
-    expectedHeaders.forEach((h) => expect(screen.getByText(h)).toBeInTheDocument());
+    expectedHeaders.forEach((h) =>
+      expect(screen.getByText(h)).toBeInTheDocument(),
+    );
     expectedFields.forEach((f) =>
-      expect(screen.getByTestId(`${testId}-cell-row-0-col-${f}`)).toBeInTheDocument()
+      expect(
+        screen.getByTestId(`${testId}-cell-row-0-col-${f}`),
+      ).toBeInTheDocument(),
     );
 
-    expect(screen.getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("2");
-    expect(screen.getByTestId(`${testId}-cell-row-0-col-requesterEmail`))
-      .toHaveTextContent("another.student@ucsb.edu");
+    expect(screen.getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent(
+      "2",
+    );
+    expect(
+      screen.getByTestId(`${testId}-cell-row-0-col-requesterEmail`),
+    ).toHaveTextContent("another.student@ucsb.edu");
 
     const editBtn = screen.getByTestId(`${testId}-cell-row-0-col-Edit-button`);
     expect(editBtn).toBeInTheDocument();
@@ -91,10 +105,12 @@ describe("RecommendationRequestTable tests", () => {
             currentUser={currentUserFixtures.userOnly}
           />
         </MemoryRouter>
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
 
-    expectedHeaders.forEach((h) => expect(screen.getByText(h)).toBeInTheDocument());
+    expectedHeaders.forEach((h) =>
+      expect(screen.getByText(h)).toBeInTheDocument(),
+    );
     expect(screen.queryByText("Delete")).not.toBeInTheDocument();
     expect(screen.queryByText("Edit")).not.toBeInTheDocument();
   });
@@ -108,22 +124,27 @@ describe("RecommendationRequestTable tests", () => {
             currentUser={currentUserFixtures.adminUser}
           />
         </MemoryRouter>
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
 
-    expect(await screen.findByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("2");
+    expect(
+      await screen.findByTestId(`${testId}-cell-row-0-col-id`),
+    ).toHaveTextContent("2");
 
     const editBtn = screen.getByTestId(`${testId}-cell-row-0-col-Edit-button`);
     fireEvent.click(editBtn);
 
     await waitFor(() =>
-      expect(mockedNavigate).toHaveBeenCalledWith("/recommendationrequests/edit/2")
+      expect(mockedNavigate).toHaveBeenCalledWith(
+        "/recommendationrequests/edit/2",
+      ),
     );
   });
 
   test("Delete calls backend", async () => {
     const axiosMock = new AxiosMockAdapter(axios);
-    axiosMock.onDelete("/api/recommendationrequests")
+    axiosMock
+      .onDelete("/api/recommendationrequests")
       .reply(200, { message: "Recommendation Request deleted" });
 
     render(
@@ -134,10 +155,12 @@ describe("RecommendationRequestTable tests", () => {
             currentUser={currentUserFixtures.adminUser}
           />
         </MemoryRouter>
-      </QueryClientProvider>
+      </QueryClientProvider>,
     );
 
-    const delBtn = await screen.findByTestId(`${testId}-cell-row-0-col-Delete-button`);
+    const delBtn = await screen.findByTestId(
+      `${testId}-cell-row-0-col-Delete-button`,
+    );
     fireEvent.click(delBtn);
 
     await waitFor(() => expect(axiosMock.history.delete.length).toBe(1));
