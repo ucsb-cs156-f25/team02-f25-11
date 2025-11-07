@@ -1,17 +1,17 @@
 import React from "react";
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
-import { articlesFixtures } from "fixtures/articlesFixtures";
+import { ucsbOrganizationFixtures } from "fixtures/ucsbOrganizationFixtures";
 import { http, HttpResponse } from "msw";
 
-import ArticlesIndexPage from "main/pages/Articles/ArticlesIndexPage";
+import UCSBOrganizationIndexPage from "main/pages/UCSBOrganization/UCSBOrganizationIndexPage";
 
 export default {
-  title: "pages/Articles/ArticlesIndexPage",
-  component: ArticlesIndexPage,
+  title: "pages/UCSBOrganization/UCSBOrganizationIndexPage",
+  component: UCSBOrganizationIndexPage,
 };
 
-const Template = () => <ArticlesIndexPage storybook={true} />;
+const Template = () => <UCSBOrganizationIndexPage storybook={true} />;
 
 export const Empty = Template.bind({});
 Empty.parameters = {
@@ -26,7 +26,7 @@ Empty.parameters = {
         status: 200,
       });
     }),
-    http.get("/api/articles/all", () => {
+    http.get("/api/ucsborganization/all", () => {
       return HttpResponse.json([], { status: 200 });
     }),
   ],
@@ -42,8 +42,8 @@ ThreeItemsOrdinaryUser.parameters = {
     http.get("/api/systemInfo", () => {
       return HttpResponse.json(systemInfoFixtures.showingNeither);
     }),
-    http.get("/api/articles/all", () => {
-      return HttpResponse.json(articlesFixtures.threeArticles);
+    http.get("/api/ucsborganization/all", () => {
+      return HttpResponse.json(ucsbOrganizationFixtures.threeOrganizations);
     }),
   ],
 };
@@ -58,11 +58,14 @@ ThreeItemsAdminUser.parameters = {
     http.get("/api/systemInfo", () => {
       return HttpResponse.json(systemInfoFixtures.showingNeither);
     }),
-    http.get("/api/articles/all", () => {
-      return HttpResponse.json(articlesFixtures.threeArticles);
+    http.get("/api/ucsborganization/all", () => {
+      return HttpResponse.json(ucsbOrganizationFixtures.threeOrganizations);
     }),
-    http.delete("/api/articles", () => {
-      return HttpResponse.json({}, { status: 200 });
+    http.delete("/api/ucsborganization", () => {
+      return HttpResponse.json(
+        { message: "Organization deleted successfully" },
+        { status: 200 },
+      );
     }),
   ],
 };

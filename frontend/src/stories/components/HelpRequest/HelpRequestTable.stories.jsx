@@ -1,40 +1,40 @@
 import React from "react";
-import ArticlesTable from "main/components/Articles/ArticlesTable";
-import { articlesFixtures } from "fixtures/articlesFixtures";
+import HelpRequestTable from "main/components/HelpRequest/HelpRequestTable";
+import { helpRequestFixtures } from "fixtures/helpRequestFixtures";
 import { currentUserFixtures } from "fixtures/currentUserFixtures";
 import { http, HttpResponse } from "msw";
 
 export default {
-  title: "components/Articles/ArticlesTable",
-  component: ArticlesTable,
+  title: "components/HelpRequest/HelpRequestTable",
+  component: HelpRequestTable,
 };
 
 const Template = (args) => {
-  return <ArticlesTable {...args} />;
+  return <HelpRequestTable  {...args} />;
 };
 
 export const Empty = Template.bind({});
 
 Empty.args = {
-  dates: [],
+  requests: [],
 };
 
 export const ThreeItemsOrdinaryUser = Template.bind({});
 
 ThreeItemsOrdinaryUser.args = {
-  dates: articlesFixtures.threeArticles,
+  requests: helpRequestFixtures.threeHelpRequests,
   currentUser: currentUserFixtures.userOnly,
 };
 
 export const ThreeItemsAdminUser = Template.bind({});
 ThreeItemsAdminUser.args = {
-  dates: articlesFixtures.threeARticles,
+  requests: helpRequestFixtures.threeHelpRequests,
   currentUser: currentUserFixtures.adminUser,
 };
 
 ThreeItemsAdminUser.parameters = {
   msw: [
-    http.delete("/api/articles", () => {
+    http.delete("/api/helprequests", () => {
       return HttpResponse.json({}, { status: 200 });
     }),
   ],
