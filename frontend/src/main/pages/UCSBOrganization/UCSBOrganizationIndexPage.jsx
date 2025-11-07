@@ -2,21 +2,21 @@ import React from "react";
 import { useBackend } from "main/utils/useBackend";
 
 import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
-import HelpRequestTable from "main/components/HelpRequest/HelpRequestTable";
+import UCSBOrganizationTable from "main/components/UCSBOrganization/UCSBOrganizationTable";
 import { useCurrentUser, hasRole } from "main/utils/useCurrentUser";
 import { Button } from "react-bootstrap";
 
-export default function HelpRequestIndexPage() {
+export default function UCSBOrganizationIndexPage() {
   const currentUser = useCurrentUser();
 
   const {
-    data: helpRequests,
+    data: organizations,
     error: _error,
     status: _status,
   } = useBackend(
     // Stryker disable next-line all : don't test internal caching of React Query
-    ["/api/helprequests/all"],
-    { method: "GET", url: "/api/helprequests/all" },
+    ["/api/ucsborganization/all"],
+    { method: "GET", url: "/api/ucsborganization/all" },
     // Stryker disable next-line all : don't test default value of empty list
     [],
   );
@@ -26,10 +26,10 @@ export default function HelpRequestIndexPage() {
       return (
         <Button
           variant="primary"
-          href="/helprequest/create"
+          href="/ucsborganization/create"
           style={{ float: "right" }}
         >
-          Create Help Request
+          Create UCSB Organization
         </Button>
       );
     }
@@ -39,8 +39,11 @@ export default function HelpRequestIndexPage() {
     <BasicLayout>
       <div className="pt-2">
         {createButton()}
-        <h1>Help Requests</h1>
-        <HelpRequestTable requests={helpRequests} currentUser={currentUser} />
+        <h1>UCSB Organizations</h1>
+        <UCSBOrganizationTable
+          organizations={organizations}
+          currentUser={currentUser}
+        />
       </div>
     </BasicLayout>
   );
