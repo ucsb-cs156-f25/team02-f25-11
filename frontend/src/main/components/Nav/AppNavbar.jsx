@@ -77,6 +77,9 @@ export default function AppNavbar({
                   <Nav.Link as={Link} to="/placeholder">
                     Placeholder
                   </Nav.Link>
+                  <Nav.Link as={Link} to="/recommendationrequest">
+                    RecommendationRequest
+                  </Nav.Link> {/* <-- This closing tag was missing */}
                   <Nav.Link as={Link} to="/articles">
                     Articles
                   </Nav.Link>
