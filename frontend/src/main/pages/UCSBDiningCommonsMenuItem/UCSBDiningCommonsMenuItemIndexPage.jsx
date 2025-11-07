@@ -20,7 +20,7 @@ export default function UCSBDiningCommonsMenuItemIndexPage() {
     // Stryker disable next-line all : don't test default value of empty list
     [],
   );
-
+    
   const createButton = () => {
     if (hasRole(currentUser, "ROLE_ADMIN")) {
       return (

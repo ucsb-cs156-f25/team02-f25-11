@@ -66,7 +66,7 @@ describe("UCSBDiningCommonsMenuItemIndexPage tests", () => {
     expect(button).toHaveAttribute("href", "/ucsbdiningcommonsmenuitem/create");
     expect(button).toHaveAttribute("style", "float: right;");
   });
-
+   
   test("renders three UCSB Dining Commons Menu Items correctly for regular user", async () => {
     setupUserOnly();
     const queryClient = new QueryClient();
