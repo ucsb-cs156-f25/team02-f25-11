@@ -1,17 +1,16 @@
 import React from "react";
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
-import { articlesFixtures } from "fixtures/articlesFixtures";
 import { http, HttpResponse } from "msw";
 
-import ArticlesEditPage from "main/pages/Articles/ArticlesEditPage";
+import HelpRequestCreatePage from "main/pages/HelpRequest/HelpRequestCreatePage";
 
 export default {
-  title: "pages/Articles/ArticlesEditPage",
-  component: ArticlesEditPage,
+  title: "pages/HelpRequest/HelpRequestCreatePage",
+  component: HelpRequestCreatePage,
 };
 
-const Template = () => <ArticlesEditPage storybook={true} />;
+const Template = () => <HelpRequestCreatePage storybook={true} />;
 
 export const Default = Template.bind({});
 Default.parameters = {
@@ -26,12 +25,7 @@ Default.parameters = {
         status: 200,
       });
     }),
-    http.get("/api/articles", () => {
-      return HttpResponse.json(articlesFixtures.oneArticle, {
-        status: 200,
-      });
-    }),
-    http.put("/api/articles", () => {
+    http.post("/api/restaurants/post", () => {
       return HttpResponse.json({}, { status: 200 });
     }),
   ],

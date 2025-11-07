@@ -1,17 +1,17 @@
 import React from "react";
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
-import { articlesFixtures } from "fixtures/articlesFixtures";
 import { http, HttpResponse } from "msw";
 
-import ArticlesEditPage from "main/pages/Articles/ArticlesEditPage";
+import HelpRequestEditPage from "main/pages/HelpRequest/HelpRequestEditPage";
+import { helpRequestFixtures } from "fixtures/helpRequestFixtures";
 
 export default {
-  title: "pages/Articles/ArticlesEditPage",
-  component: ArticlesEditPage,
+  title: "pages/HelpRequest/HelpRequestEditPage",
+  component: HelpRequestEditPage,
 };
 
-const Template = () => <ArticlesEditPage storybook={true} />;
+const Template = () => <HelpRequestEditPage storybook={true} />;
 
 export const Default = Template.bind({});
 Default.parameters = {
@@ -26,12 +26,16 @@ Default.parameters = {
         status: 200,
       });
     }),
-    http.get("/api/articles", () => {
-      return HttpResponse.json(articlesFixtures.oneArticle, {
+    http.get("/api/helprequests", () => {
+      return HttpResponse.json(helpRequestFixtures.threeHelpRequests[0], {
         status: 200,
       });
     }),
-    http.put("/api/articles", () => {
+    http.put("/api/helprequests", () => {
+      return HttpResponse.json({}, { status: 200 });
+    }),
+    http.put("/api/helprequests", (req) => {
+      window.alert("PUT: " + req.url + " and body: " + req.body);
       return HttpResponse.json({}, { status: 200 });
     }),
   ],

@@ -1,17 +1,17 @@
 import React from "react";
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
-import { articlesFixtures } from "fixtures/articlesFixtures";
 import { http, HttpResponse } from "msw";
 
-import ArticlesEditPage from "main/pages/Articles/ArticlesEditPage";
+import UCSBOrganizationEditPage from "main/pages/UCSBOrganization/UCSBOrganizationEditPage";
+import { ucsbOrganizationFixtures } from "fixtures/ucsbOrganizationFixtures";
 
 export default {
-  title: "pages/Articles/ArticlesEditPage",
-  component: ArticlesEditPage,
+  title: "pages/UCSBOrganization/UCSBOrganizationEditPage",
+  component: UCSBOrganizationEditPage,
 };
 
-const Template = () => <ArticlesEditPage storybook={true} />;
+const Template = () => <UCSBOrganizationEditPage storybook={true} />;
 
 export const Default = Template.bind({});
 Default.parameters = {
@@ -26,12 +26,16 @@ Default.parameters = {
         status: 200,
       });
     }),
-    http.get("/api/articles", () => {
-      return HttpResponse.json(articlesFixtures.oneArticle, {
+    http.get("/api/ucsborganization", () => {
+      return HttpResponse.json(ucsbOrganizationFixtures.threeOrganizations[0], {
         status: 200,
       });
     }),
-    http.put("/api/articles", () => {
+    http.put("/api/ucsborganization", () => {
+      return HttpResponse.json({}, { status: 200 });
+    }),
+    http.put("/api/ucsborganization", (req) => {
+      window.alert("PUT: " + req.url + " and body: " + req.body);
       return HttpResponse.json({}, { status: 200 });
     }),
   ],

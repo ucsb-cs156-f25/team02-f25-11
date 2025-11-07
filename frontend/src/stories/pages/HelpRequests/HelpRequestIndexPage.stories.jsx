@@ -1,17 +1,17 @@
 import React from "react";
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
-import { articlesFixtures } from "fixtures/articlesFixtures";
+import { helpRequestFixtures } from "fixtures/helpRequestFixtures";
 import { http, HttpResponse } from "msw";
 
-import ArticlesIndexPage from "main/pages/Articles/ArticlesIndexPage";
+import HelpRequestIndexPage from "main/pages/HelpRequest/HelpRequestIndexPage";
 
 export default {
-  title: "pages/Articles/ArticlesIndexPage",
-  component: ArticlesIndexPage,
+  title: "pages/HelpRequest/HelpRequestIndexPage",
+  component: HelpRequestIndexPage,
 };
 
-const Template = () => <ArticlesIndexPage storybook={true} />;
+const Template = () => <HelpRequestIndexPage storybook={true} />;
 
 export const Empty = Template.bind({});
 Empty.parameters = {
@@ -26,7 +26,7 @@ Empty.parameters = {
         status: 200,
       });
     }),
-    http.get("/api/articles/all", () => {
+    http.get("/api/helprequests/all", () => {
       return HttpResponse.json([], { status: 200 });
     }),
   ],
@@ -42,8 +42,8 @@ ThreeItemsOrdinaryUser.parameters = {
     http.get("/api/systemInfo", () => {
       return HttpResponse.json(systemInfoFixtures.showingNeither);
     }),
-    http.get("/api/articles/all", () => {
-      return HttpResponse.json(articlesFixtures.threeArticles);
+    http.get("/api/helprequests/all", () => {
+      return HttpResponse.json(helpRequestFixtures.threeHelpRequests);
     }),
   ],
 };
@@ -58,11 +58,14 @@ ThreeItemsAdminUser.parameters = {
     http.get("/api/systemInfo", () => {
       return HttpResponse.json(systemInfoFixtures.showingNeither);
     }),
-    http.get("/api/articles/all", () => {
-      return HttpResponse.json(articlesFixtures.threeArticles);
+    http.get("/api/helprequests/all", () => {
+      return HttpResponse.json(helpRequestFixtures.threeHelpRequests);
     }),
-    http.delete("/api/articles", () => {
-      return HttpResponse.json({}, { status: 200 });
+    http.delete("/api/helprequests", () => {
+      return HttpResponse.json(
+        { message: "Help Request deleted successfully" },
+        { status: 200 },
+      );
     }),
   ],
 };
