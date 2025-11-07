@@ -71,7 +71,18 @@ export default function AppNavbar({
                   <Nav.Link as={Link} to="/placeholder">
                     Placeholder
                   </Nav.Link>
-                  {/* Changed from NavLink to Link and now it is working */}
+                  <Nav.Link as={Link} to="/articles">
+                    Articles
+                  </Nav.Link>
+                  <Nav.Link as={Link} to="/helprequest">
+                    HelpRequest
+                  </Nav.Link>
+                  <Nav.Link as={Link} to="/ucsborganization">
+                    UCSBOrganization
+                  </Nav.Link>
+                  <Nav.Link as={Link} to="/recommendationrequests">
+                    RecommendationRequests
+                  </Nav.Link>
                   <Nav.Link as={Link} to="/ucsbdiningcommonsmenuitem">
                     UCSBDiningCommonsMenuItem
                   </Nav.Link>
