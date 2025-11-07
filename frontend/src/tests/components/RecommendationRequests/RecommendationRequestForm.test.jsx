@@ -95,7 +95,6 @@ describe("RecommendationRequestForm tests", () => {
     ).toBeInTheDocument();
     expect(screen.getByText(/Date needed is required\./)).toBeInTheDocument();
   });
-
   test("dateNeeded must be after or equal to dateRequested", async () => {
     render(
       <QueryClientProvider client={queryClient}>
@@ -373,7 +372,6 @@ describe("RecommendationRequestForm tests", () => {
       screen.getByTestId("RecommendationRequestForm-dateNeeded"),
     ).toHaveClass("is-invalid");
   });
-
   test("requester email rejects trailing characters (regex $ anchor)", async () => {
     const submitSpy = vi.fn();
     render(

@@ -2,7 +2,7 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import RecommendationRequestCreatePage from "main/pages/RecommendationRequest/RecommendationRequestCreatePage";
 import { RECOMMENDATION_REQUESTS_ALL_KEY } from "main/pages/RecommendationRequest/keys";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { MemoryRouter } from "react-router"; // <-- revert to react-router
+import { MemoryRouter } from "react-router";
 
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
@@ -20,7 +20,7 @@ vi.mock("react-toastify", async (importOriginal) => {
 });
 
 const mockNavigate = vi.fn();
-vi.mock("react-router", async (importOriginal) => { // <-- mock the core package
+vi.mock("react-router", async (importOriginal) => {
   const originalModule = await importOriginal();
   return {
     ...originalModule,
@@ -38,12 +38,8 @@ describe("RecommendationRequestCreatePage tests", () => {
     vi.clearAllMocks();
     axiosMock.reset();
     axiosMock.resetHistory();
-    axiosMock
-      .onGet("/api/currentUser")
-      .reply(200, apiCurrentUserFixtures.userOnly);
-    axiosMock
-      .onGet("/api/systemInfo")
-      .reply(200, systemInfoFixtures.showingNeither);
+    axiosMock.onGet("/api/currentUser").reply(200, apiCurrentUserFixtures.userOnly);
+    axiosMock.onGet("/api/systemInfo").reply(200, systemInfoFixtures.showingNeither);
   });
 
   const renderWithProviders = (ui) => {
@@ -105,6 +101,7 @@ describe("RecommendationRequestCreatePage tests", () => {
     fireEvent.click(screen.getByText("Create"));
 
     await waitFor(() => expect(axiosMock.history.post.length).toBe(1));
+
     expect(axiosMock.history.post[0].params).toEqual({
       requesterEmail: "student@ucsb.edu",
       professorEmail: "prof@ucsb.edu",
@@ -147,9 +144,7 @@ describe("RecommendationRequestCreatePage tests", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText(
-          "Date needed must be after or equal to date requested."
-        )
+        screen.getByText("Date needed must be after or equal to date requested.")
       ).toBeInTheDocument();
     });
 

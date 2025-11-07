@@ -36,6 +36,8 @@ import { hasRole, useCurrentUser } from "main/utils/useCurrentUser";
 import "bootstrap/dist/css/bootstrap.css";
 import "react-toastify/dist/ReactToastify.css";
 
+
+
 function App() {
   const currentUser = useCurrentUser();
 
@@ -157,6 +159,46 @@ function App() {
           <Route
             exact
             path="/recommendationrequest/create"
+            element={<RecommendationRequestCreatePage />}
+          />
+        </>
+      )}
+      {hasRole(currentUser, "ROLE_USER") && (
+        <>
+          {/* Support both singular and plural routes */}
+          <Route
+            exact
+            path="/recommendationrequest"
+            element={<RecommendationRequestIndexPage />}
+          />
+          <Route
+            exact
+            path="/recommendationrequests"
+            element={<RecommendationRequestIndexPage />}
+          />
+        </>
+      )}
+      {hasRole(currentUser, "ROLE_ADMIN") && (
+        <>
+          {/* Edit/Create: support both singular and plural */}
+          <Route
+            exact
+            path="/recommendationrequest/edit/:id"
+            element={<RecommendationRequestEditPage />}
+          />
+          <Route
+            exact
+            path="/recommendationrequests/edit/:id"
+            element={<RecommendationRequestEditPage />}
+          />
+          <Route
+            exact
+            path="/recommendationrequest/create"
+            element={<RecommendationRequestCreatePage />}
+          />
+          <Route
+            exact
+            path="/recommendationrequests/create"
             element={<RecommendationRequestCreatePage />}
           />
         </>
